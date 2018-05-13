@@ -9,7 +9,24 @@
 import Foundation
 
 
+
+struct Atom {
+    let id : Int
+    let type : String
+    let posX : Double
+    let posY : Double
+    let posZ : Double
+}
+
+struct Bond {
+    let left : Int
+    let right : Int
+    let link : Int
+}
+
 struct Ligand {
     
-    
+    let name : String
+    let atoms : [Atom]
+    let bonds : [Bond]
 }

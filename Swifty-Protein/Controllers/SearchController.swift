@@ -8,11 +8,14 @@
 
 import UIKit
 
-class SearchController : UITableViewController, UISearchControllerDelegate {
+class SearchController : UITableViewController, UISearchBarDelegate {
     
     let ligands : [String] = {
        return RCSBService.shared.parseFile()
     }()
+    
+    var filteredLigands = [String]()
+    var isSearching = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,33 +47,26 @@ class SearchController : UITableViewController, UISearchControllerDelegate {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
 
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.delegate = self
-        let searchBar = searchController.searchBar
-        searchBar.tintColor = C_DarkBackground
         
-        
-        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
-            if let view = textField.subviews.first {
-                view.backgroundColor = .white
-                view.layer.cornerRadius = 10
-                view.clipsToBounds = true
-            }
-        }
-        
-        navigationItem.searchController = searchController
+        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 70))
+        searchBar.delegate = self
+        tableView.tableHeaderView = searchBar
 
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.titleView = navigationTitle
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ligands.count
+        if isSearching { return filteredLigands.count }
+        else { return ligands.count }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
-        cell.name.text = ligands[indexPath.item]
+
+        if isSearching { cell.name.text = filteredLigands[indexPath.item] }
+        else { cell.name.text = ligands[indexPath.item] }
+        
         cell.backgroundColor = indexPath.item % 2 == 1 ? .none : UIColor(white: 1, alpha: 0.03)
         return cell
     }
@@ -89,16 +85,17 @@ class SearchController : UITableViewController, UISearchControllerDelegate {
         }
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty { isSearching = false }
+        else {
+            filteredLigands = []
+            isSearching = true
+            for ligand in ligands {
+                if (ligand.range(of: searchText.uppercased()) != nil) { filteredLigands.append(ligand)}
+            }
+        }
+        tableView.reloadData()
+    }
     
 }
 
-extension UISearchBar {
-    func changeSearchBarColor(color: UIColor) {
-        UIGraphicsBeginImageContext(CGSize(width: self.frame.width, height: self.frame.height))
-        color.setFill()
-        UIBezierPath(rect: self.frame).fill()
-        let bgImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        self.setSearchFieldBackgroundImage(bgImage, for: .normal)
-    }
-}

@@ -32,8 +32,36 @@ import Foundation
                 return
                 
             }
-            DispatchQueue.main.async { completion(file) }
+            print(self.parseData(file: file))
+            DispatchQueue.main.async {completion(file) }
         }.resume()
+    }
+    
+    
+    
+    
+    func parseData(file: String) -> Ligand? {
+        let lines = file.components(separatedBy: "\n")
+        let header = lines[3].components(separatedBy: " ").filter { $0 != "" }
+        let lastAtom = Int(header[0])! + 3
+        let lastBond = Int(header[1])! + lastAtom
+
+        var atoms = [Atom]()
+        var bonds = [Bond]()
+
+        for i in 4...lastBond {
+            let infos = lines[i].components(separatedBy: " ").filter { $0 != "" }
+            if i <= lastAtom {
+                guard let x =  Double(infos[0]), let y = Double(infos[1]), let z = Double(infos[2]) else { return nil }
+                let atom = Atom(id: i - 3, type: infos[3], posX: x, posY: y, posZ: z)
+                atoms.append(atom)
+            } else {
+                guard let left = Int(infos[0]), let right = Int(infos[1]), let links = Int(infos[2]) else { return nil }
+                let bond = Bond(left: left, right: right, link: links)
+                bonds.append(bond)
+            }
+        }
+        return Ligand(name: lines[0], atoms: atoms, bonds: bonds)
     }
     
 }
