@@ -28,8 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         guard let navigationController = window?.rootViewController as? UINavigationController else { return }
-        let authController = LoginController()
-        navigationController.present(authController, animated: true, completion: nil)
+        let loginController = LoginController()
+        navigationController.present(loginController, animated: true, completion: nil)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

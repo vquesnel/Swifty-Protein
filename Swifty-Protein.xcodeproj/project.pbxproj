@@ -12,12 +12,15 @@
 		FB5B4DA220A72780006B7183 /* Ligand.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5B4DA120A72780006B7183 /* Ligand.swift */; };
 		FB82B17B20A59CB400BF8160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B17A20A59CB400BF8160 /* AppDelegate.swift */; };
 		FB82B17D20A59CB400BF8160 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B17C20A59CB400BF8160 /* LoginController.swift */; };
-		FB82B18020A59CB400BF8160 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB82B17E20A59CB400BF8160 /* Main.storyboard */; };
 		FB82B18520A59CB600BF8160 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB82B18320A59CB600BF8160 /* LaunchScreen.storyboard */; };
 		FB82B18F20A59D5C00BF8160 /* ligands.txt in Resources */ = {isa = PBXBuildFile; fileRef = FB82B18E20A59D5C00BF8160 /* ligands.txt */; };
 		FB82B19120A5A4AD00BF8160 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B19020A5A4AD00BF8160 /* Colors.swift */; };
 		FB82B19320A5AA2600BF8160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB82B19220A5AA2600BF8160 /* Assets.xcassets */; };
 		FB82B19520A5B5E800BF8160 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B19420A5B5E800BF8160 /* SearchController.swift */; };
+		FBDBBAB620A84D3D003664F5 /* SearchController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBAB520A84D3D003664F5 /* SearchController+Extension.swift */; };
+		FBDBBAB820A84F80003664F5 /* LoginController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBAB720A84F80003664F5 /* LoginController+Extension.swift */; };
+		FBDBBABA20A85997003664F5 /* LigandController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBAB920A85997003664F5 /* LigandController.swift */; };
+		FBDBBABC20A89844003664F5 /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBABB20A89844003664F5 /* RequestService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,13 +30,16 @@
 		FB82B17720A59CB400BF8160 /* Swifty-Protein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty-Protein.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB82B17A20A59CB400BF8160 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FB82B17C20A59CB400BF8160 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		FB82B17F20A59CB400BF8160 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FB82B18420A59CB600BF8160 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB82B18620A59CB600BF8160 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB82B18E20A59D5C00BF8160 /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ligands.txt; path = ../../../../Desktop/ligands.txt; sourceTree = "<group>"; };
 		FB82B19020A5A4AD00BF8160 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		FB82B19220A5AA2600BF8160 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
 		FB82B19420A5B5E800BF8160 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		FBDBBAB520A84D3D003664F5 /* SearchController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchController+Extension.swift"; sourceTree = "<group>"; };
+		FBDBBAB720A84F80003664F5 /* LoginController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+Extension.swift"; sourceTree = "<group>"; };
+		FBDBBAB920A85997003664F5 /* LigandController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LigandController.swift; sourceTree = "<group>"; };
+		FBDBBABB20A89844003664F5 /* RequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				FB1D247120A6FF6C0040D04A /* RCSBService.swift */,
+				FBDBBABB20A89844003664F5 /* RequestService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -97,7 +104,6 @@
 				FB1D247020A6FF5B0040D04A /* Service */,
 				FB82B18D20A59D4A00BF8160 /* Misc */,
 				FB82B18C20A59D4400BF8160 /* Controllers */,
-				FB82B17E20A59CB400BF8160 /* Main.storyboard */,
 				FB82B18320A59CB600BF8160 /* LaunchScreen.storyboard */,
 				FB82B19020A5A4AD00BF8160 /* Colors.swift */,
 				FB82B18620A59CB600BF8160 /* Info.plist */,
@@ -108,8 +114,11 @@
 		FB82B18C20A59D4400BF8160 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				FBDBBAB720A84F80003664F5 /* LoginController+Extension.swift */,
 				FB82B17C20A59CB400BF8160 /* LoginController.swift */,
 				FB82B19420A5B5E800BF8160 /* SearchController.swift */,
+				FBDBBAB520A84D3D003664F5 /* SearchController+Extension.swift */,
+				FBDBBAB920A85997003664F5 /* LigandController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -181,7 +190,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB82B18520A59CB600BF8160 /* LaunchScreen.storyboard in Resources */,
-				FB82B18020A59CB400BF8160 /* Main.storyboard in Resources */,
 				FB82B19320A5AA2600BF8160 /* Assets.xcassets in Resources */,
 				FB82B18F20A59D5C00BF8160 /* ligands.txt in Resources */,
 			);
@@ -196,8 +204,12 @@
 			files = (
 				FB82B17D20A59CB400BF8160 /* LoginController.swift in Sources */,
 				FB82B19120A5A4AD00BF8160 /* Colors.swift in Sources */,
+				FBDBBABA20A85997003664F5 /* LigandController.swift in Sources */,
+				FBDBBABC20A89844003664F5 /* RequestService.swift in Sources */,
+				FBDBBAB620A84D3D003664F5 /* SearchController+Extension.swift in Sources */,
 				FB1D247220A6FF6C0040D04A /* RCSBService.swift in Sources */,
 				FB82B17B20A59CB400BF8160 /* AppDelegate.swift in Sources */,
+				FBDBBAB820A84F80003664F5 /* LoginController+Extension.swift in Sources */,
 				FB1D247420A704F10040D04A /* LigandCell.swift in Sources */,
 				FB5B4DA220A72780006B7183 /* Ligand.swift in Sources */,
 				FB82B19520A5B5E800BF8160 /* SearchController.swift in Sources */,
@@ -207,14 +219,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FB82B17E20A59CB400BF8160 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FB82B17F20A59CB400BF8160 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FB82B18320A59CB600BF8160 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -6,8 +6,17 @@
 //  Copyright © 2018 Kiefer Wiessler. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
+
+struct Results : Decodable {
+    let formula : String
+    let type : String
+}
+
+struct Infos : Decodable {
+    let results : [Results]
+}
 
 
 struct Atom {
@@ -25,8 +34,8 @@ struct Bond {
 }
 
 struct Ligand {
-    
     let name : String
     let atoms : [Atom]
     let bonds : [Bond]
+    var infos : Infos?
 }

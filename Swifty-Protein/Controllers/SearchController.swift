@@ -8,32 +8,70 @@
 
 import UIKit
 
-class SearchController : UITableViewController, UISearchBarDelegate {
+class SearchController : UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+    
+    let loginController = LoginController()
+    let ligandController = LigandController()
     
     let ligands : [String] = {
-       return RCSBService.shared.parseFile()
+       return RCSBService.shared.getRessource()
     }()
     
     var filteredLigands = [String]()
     var isSearching = false
     
+    
+    lazy var tableView : UITableView = {
+        let view = UITableView()
+        view.delegate = self
+        view.dataSource = self
+        view.register(LigandCell.self, forCellReuseIdentifier: "ligandCellID")
+        view.separatorColor = UIColor(white: 0, alpha: 0)
+        view.backgroundColor = C_DarkBackground
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    lazy var searchBar : UISearchBar = {
+        let bar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 70))
+        bar.delegate = self
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.backgroundImage = UIImage()
+        bar.backgroundColor = C_Foreground
+        bar.layer.cornerRadius = 10
+        bar.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        bar.clipsToBounds = true
+        bar.barTintColor = .black
+        bar.placeholder = "Search"
+        bar.keyboardAppearance = .dark
+        return bar
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = C_DarkBackground
+        view.addSubview(tableView)
+        view.addSubview(searchBar)
         
-  
-        tableView.register(LigandCell.self, forCellReuseIdentifier: "ligandCellID")
-        tableView.separatorColor = UIColor(white: 0, alpha: 0)
-        tableView.backgroundColor = C_DarkBackground
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 2).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -2).isActive = true
+        
+        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        searchBar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         setupNavBar()
-        let controller = LoginController()
-        navigationController?.present(controller, animated: false, completion: nil)
+        authenticate()
     }
     
     
     
     func setupNavBar() {
-        
         let navigationTitle = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 140, height: 22))
        
         navigationTitle.textColor = UIColor(white: 0, alpha: 0.6)
@@ -46,56 +84,15 @@ class SearchController : UITableViewController, UISearchBarDelegate {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
-
-        
-        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 70))
-        searchBar.delegate = self
-        tableView.tableHeaderView = searchBar
-
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.titleView = navigationTitle
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching { return filteredLigands.count }
-        else { return ligands.count }
+    
+    func authenticate() {
+        navigationController?.present(loginController, animated: false, completion: nil)
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
 
-        if isSearching { cell.name.text = filteredLigands[indexPath.item] }
-        else { cell.name.text = ligands[indexPath.item] }
-        
-        cell.backgroundColor = indexPath.item % 2 == 1 ? .none : UIColor(white: 1, alpha: 0.03)
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(60)
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
-        guard let name = cell.name.text else { return }
-        print("Selected : \(name)")
-        RCSBService.shared.getLigand(name: name) { data in
-            guard let str = data else { print("zdp"); return }
-            print(str)
-        }
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty { isSearching = false }
-        else {
-            filteredLigands = []
-            isSearching = true
-            for ligand in ligands {
-                if (ligand.range(of: searchText.uppercased()) != nil) { filteredLigands.append(ligand)}
-            }
-        }
-        tableView.reloadData()
-    }
-    
 }
 

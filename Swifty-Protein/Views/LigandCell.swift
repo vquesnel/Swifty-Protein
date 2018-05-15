@@ -14,16 +14,41 @@ class LigandCell: UITableViewCell {
         let label = UILabel()
         label.textColor = C_TextLight
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.highlightedTextColor = .black
         return label
     }()
+    
+    let separator : UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    let selectedView : UIView = {
+        let view = UIView()
+        view.backgroundColor = C_Blue
+        return view
+    }()
+    
+
+
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .none
+        selectedBackgroundView = selectedView
         addSubview(name)
+        addSubview(separator)
+
         
         name.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         name.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        separator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 1).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        separator.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         
     }
     
