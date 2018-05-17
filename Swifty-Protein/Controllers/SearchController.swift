@@ -14,7 +14,7 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     let ligandController = LigandController()
     
     let ligands : [String] = {
-       return RCSBService.shared.getRessource()
+        return RCSBService.shared.getRessource()
     }()
     
     var filteredLigands = [String]()
@@ -51,7 +51,7 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = C_DarkBackground
         view.addSubview(tableView)
         view.addSubview(searchBar)
@@ -73,7 +73,7 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     
     func setupNavBar() {
         let navigationTitle = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 140, height: 22))
-       
+        
         navigationTitle.textColor = UIColor(white: 0, alpha: 0.6)
         navigationTitle.textAlignment = .center
         navigationTitle.text = "Ligands"
@@ -93,6 +93,7 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         navigationController?.present(loginController, animated: false, completion: nil)
     }
     
-
+    
 }
+
 

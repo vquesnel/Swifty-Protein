@@ -23,7 +23,7 @@ extension SearchController {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
-      
+        
         if isSearching { cell.name.text = filteredLigands[indexPath.item] }
         else { cell.name.text = ligands[indexPath.item] }
         cell.backgroundColor = indexPath.item % 2 == 1 ? C_DarkBackground: UIColor(white: 0.8, alpha: 0.03)
@@ -40,7 +40,7 @@ extension SearchController {
     
     // CELLS SELECTION
     
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var name = String()
         if isSearching { name = filteredLigands[indexPath.item] }
@@ -51,10 +51,10 @@ extension SearchController {
             self.ligandController.ligand = ligand
             self.navigationController?.pushViewController(self.ligandController, animated: true)
         }
-
+        
     }
     
-
+    
     
     // SEARCHBAR FILTERING
     
@@ -81,3 +81,4 @@ extension SearchController {
         searchBar.endEditing(true)
     }
 }
+

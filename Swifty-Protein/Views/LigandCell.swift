@@ -32,8 +32,8 @@ class LigandCell: UITableViewCell {
         return view
     }()
     
-
-
+    
+    
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -41,7 +41,7 @@ class LigandCell: UITableViewCell {
         selectedBackgroundView = selectedView
         addSubview(name)
         addSubview(separator)
-
+        
         
         name.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         name.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -57,3 +57,4 @@ class LigandCell: UITableViewCell {
     }
     
 }
+

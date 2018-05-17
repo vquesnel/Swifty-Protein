@@ -11,7 +11,7 @@ import LocalAuthentication
 
 
 class LoginController: UIViewController {
-
+    
     lazy var searchController : SearchController = SearchController()
     
     let logo : UIImageView = {
@@ -35,7 +35,7 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let background = C_addBackground(image: "background")
         
         view.addSubview(background)
@@ -46,7 +46,7 @@ class LoginController: UIViewController {
         setConstraints()
     }
     
-
+    
     @objc func authenticate(){
         let context = LAContext()
         let reason = "Please authenticate for login."
@@ -67,7 +67,7 @@ class LoginController: UIViewController {
     
     
     func setConstraints() {
-
+        
         
         logo.widthAnchor.constraint(equalToConstant: 230).isActive = true
         logo.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -80,6 +80,7 @@ class LoginController: UIViewController {
         loginButton.heightAnchor.constraint(equalToConstant: 64).isActive = true
     }
 }
+
 
 
 

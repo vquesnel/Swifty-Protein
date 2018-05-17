@@ -71,5 +71,5 @@ extension UIColor {
         "V" : UIColor(red: 168/255, green: 168/255, blue: 172/255, alpha: 1),
         "W" : UIColor(red: 39/255, green: 151/255, blue: 213/255, alpha: 1)
     ]
-
+    
 }

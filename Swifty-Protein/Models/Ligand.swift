@@ -39,3 +39,4 @@ struct Ligand {
     let bonds : [Bond]
     var infos : Infos?
 }
+
