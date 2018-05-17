@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+<<<<<<< HEAD
 		0DE6B07920ADB8AF00E9020E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B07820ADB8AF00E9020E /* AppDelegate.swift */; };
 		0DE6B07B20ADB8AF00E9020E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B07A20ADB8AF00E9020E /* Colors.swift */; };
 		0DE6B08B20ADB92C00E9020E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B08A20ADB92C00E9020E /* Launch Screen.storyboard */; };
@@ -40,6 +41,41 @@
 		0DE6B0A020ADBA6900E9020E /* SearchController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchController+Extension.swift"; sourceTree = "<group>"; };
 		0DE6B0A320ADBA9C00E9020E /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ligands.txt; sourceTree = "<group>"; };
 		0DE6B0A520ADBAA900E9020E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+=======
+		57C925FC20AD8F3D000DE6F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57C925FB20AD8F3D000DE6F6 /* Assets.xcassets */; };
+		57C925FF20AD8FC0000DE6F6 /* ligands.txt in Resources */ = {isa = PBXBuildFile; fileRef = 57C925FE20AD8FC0000DE6F6 /* ligands.txt */; };
+		FB1D247220A6FF6C0040D04A /* RCSBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1D247120A6FF6C0040D04A /* RCSBService.swift */; };
+		FB1D247420A704F10040D04A /* LigandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1D247320A704F10040D04A /* LigandCell.swift */; };
+		FB5B4DA220A72780006B7183 /* Ligand.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5B4DA120A72780006B7183 /* Ligand.swift */; };
+		FB82B17B20A59CB400BF8160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B17A20A59CB400BF8160 /* AppDelegate.swift */; };
+		FB82B17D20A59CB400BF8160 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B17C20A59CB400BF8160 /* LoginController.swift */; };
+		FB82B18520A59CB600BF8160 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB82B18320A59CB600BF8160 /* LaunchScreen.storyboard */; };
+		FB82B19120A5A4AD00BF8160 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B19020A5A4AD00BF8160 /* Colors.swift */; };
+		FB82B19520A5B5E800BF8160 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82B19420A5B5E800BF8160 /* SearchController.swift */; };
+		FBDBBAB620A84D3D003664F5 /* SearchController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBAB520A84D3D003664F5 /* SearchController+Extension.swift */; };
+		FBDBBAB820A84F80003664F5 /* LoginController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBAB720A84F80003664F5 /* LoginController+Extension.swift */; };
+		FBDBBABA20A85997003664F5 /* LigandController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBAB920A85997003664F5 /* LigandController.swift */; };
+		FBDBBABC20A89844003664F5 /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDBBABB20A89844003664F5 /* RequestService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		57C925FB20AD8F3D000DE6F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		57C925FE20AD8FC0000DE6F6 /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ligands.txt; sourceTree = "<group>"; };
+		FB1D247120A6FF6C0040D04A /* RCSBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCSBService.swift; sourceTree = "<group>"; };
+		FB1D247320A704F10040D04A /* LigandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LigandCell.swift; sourceTree = "<group>"; };
+		FB5B4DA120A72780006B7183 /* Ligand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ligand.swift; sourceTree = "<group>"; };
+		FB82B17720A59CB400BF8160 /* Swifty-Protein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty-Protein.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB82B17A20A59CB400BF8160 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FB82B17C20A59CB400BF8160 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		FB82B18420A59CB600BF8160 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FB82B18620A59CB600BF8160 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB82B19020A5A4AD00BF8160 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		FB82B19420A5B5E800BF8160 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		FBDBBAB520A84D3D003664F5 /* SearchController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchController+Extension.swift"; sourceTree = "<group>"; };
+		FBDBBAB720A84F80003664F5 /* LoginController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+Extension.swift"; sourceTree = "<group>"; };
+		FBDBBAB920A85997003664F5 /* LigandController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LigandController.swift; sourceTree = "<group>"; };
+		FBDBBABB20A89844003664F5 /* RequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
+>>>>>>> assets + ligands.txt
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +89,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+<<<<<<< HEAD
 		0DE6B06C20ADB8AF00E9020E = {
+=======
+		57C925FD20AD8F9A000DE6F6 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				57C925FE20AD8FC0000DE6F6 /* ligands.txt */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
+		FB1D247020A6FF5B0040D04A /* Service */ = {
+>>>>>>> assets + ligands.txt
 			isa = PBXGroup;
 			children = (
 				0DE6B07720ADB8AF00E9020E /* Swifty-Protein */,
@@ -89,7 +137,12 @@
 		0DE6B08C20ADB95800E9020E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				0DE6B08D20ADB98100E9020E /* LigandCell.swift */,
+=======
+				FB82B17920A59CB400BF8160 /* Swifty-Protein */,
+				FB82B17820A59CB400BF8160 /* Products */,
+>>>>>>> assets + ligands.txt
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -106,7 +159,20 @@
 		0DE6B09420ADB9C900E9020E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				0DE6B09520ADB9D600E9020E /* Ligand.swift */,
+=======
+				57C925FD20AD8F9A000DE6F6 /* Misc */,
+				57C925FB20AD8F3D000DE6F6 /* Assets.xcassets */,
+				FB82B17A20A59CB400BF8160 /* AppDelegate.swift */,
+				FB5B4DA320A72784006B7183 /* Models */,
+				FB1D247520A704FB0040D04A /* Views */,
+				FB1D247020A6FF5B0040D04A /* Service */,
+				FB82B18C20A59D4400BF8160 /* Controllers */,
+				FB82B18320A59CB600BF8160 /* LaunchScreen.storyboard */,
+				FB82B19020A5A4AD00BF8160 /* Colors.swift */,
+				FB82B18620A59CB600BF8160 /* Info.plist */,
+>>>>>>> assets + ligands.txt
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -123,6 +189,7 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		0DE6B0A220ADBA8200E9020E /* Misc */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +198,8 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
+=======
+>>>>>>> assets + ligands.txt
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -190,9 +259,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
 				0DE6B08B20ADB92C00E9020E /* Launch Screen.storyboard in Resources */,
 				0DE6B0A620ADBAA900E9020E /* Assets.xcassets in Resources */,
 				0DE6B0A420ADBA9C00E9020E /* ligands.txt in Resources */,
+=======
+				FB82B18520A59CB600BF8160 /* LaunchScreen.storyboard in Resources */,
+				57C925FF20AD8FC0000DE6F6 /* ligands.txt in Resources */,
+				57C925FC20AD8F3D000DE6F6 /* Assets.xcassets in Resources */,
+>>>>>>> assets + ligands.txt
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,10 +407,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KZLCG27XYU;
+				DEVELOPMENT_TEAM = 7CT92MF359;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
+<<<<<<< HEAD
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "kwiessle.Swifty-Protein";
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
+>>>>>>> assets + ligands.txt
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -347,10 +431,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KZLCG27XYU;
+				DEVELOPMENT_TEAM = 7CT92MF359;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
+<<<<<<< HEAD
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "kwiessle.Swifty-Protein";
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
+>>>>>>> assets + ligands.txt
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
