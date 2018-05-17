@@ -40,6 +40,7 @@
 		FBDBBAB720A84F80003664F5 /* LoginController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+Extension.swift"; sourceTree = "<group>"; };
 		FBDBBAB920A85997003664F5 /* LigandController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LigandController.swift; sourceTree = "<group>"; };
 		FBDBBABB20A89844003664F5 /* RequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
+		FBF48F3120ACA8F400EE7604 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +99,7 @@
 		FB82B17920A59CB400BF8160 /* Swifty-Protein */ = {
 			isa = PBXGroup;
 			children = (
+				FBF48F3120ACA8F400EE7604 /* Assets.xcassets */,
 				FB82B17A20A59CB400BF8160 /* AppDelegate.swift */,
 				FB5B4DA320A72784006B7183 /* Models */,
 				FB1D247520A704FB0040D04A /* Views */,
@@ -358,7 +360,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "kwiessle.Swifty-Protein";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -377,7 +379,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "kwiessle.Swifty-Protein";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
