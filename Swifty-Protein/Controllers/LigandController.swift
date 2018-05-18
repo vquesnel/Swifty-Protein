@@ -23,7 +23,7 @@ class LigandController: UIViewController {
         }
     }
     
-    private let camera: SCNNode = {
+    private let camera : SCNNode = {
         let node = SCNNode()
         node.camera = SCNCamera()
         node.camera?.automaticallyAdjustsZRange = true
@@ -33,11 +33,36 @@ class LigandController: UIViewController {
     
     private lazy var scene: SCNScene = {
         let scene = SCNScene()
+        
+        let fullLightColor = UIColor(white: 0.8, alpha: 1)
+        let shadowLightColor = UIColor(white: 0.4, alpha: 1)
+        
+        let backLight = self.createLight(type: .omni, color: fullLightColor, position: SCNVector3(0, 50, -50))
+        let fillLight = self.createLight(type: .omni, color: fullLightColor, position: SCNVector3(-50, -50, 50))
+        let keyLight = self.createLight(type: .omni, color: shadowLightColor, position: SCNVector3(80, 0, 0))
+        let ambientLight = self.createLight(type: .ambient, color: shadowLightColor, position: nil)
+        
+        scene.rootNode.addChildNode(backLight)
+        scene.rootNode.addChildNode(fillLight)
+        scene.rootNode.addChildNode(keyLight)
+        scene.rootNode.addChildNode(ambientLight)
         scene.rootNode.addChildNode(camera)
+        
         return scene
     }()
     
-    private lazy var sceneView: SCNView = {
+    private func createLight(type: SCNLight.LightType, color: UIColor, position: SCNVector3?) -> SCNNode {
+        let node = SCNNode()
+        let light = SCNLight()
+        light.type = type
+        light.color = color
+        node.light = light
+        guard let position = position else { return node }
+        node.position = position
+        return node
+    }
+    
+    private lazy var sceneView : SCNView = {
         let view = SCNView()
         view.allowsCameraControl = true
         view.scene = scene
@@ -47,7 +72,7 @@ class LigandController: UIViewController {
     }()
     
     let modeButton : UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Sticks & balls", "Sticks", "Balls"])
+        let control = UISegmentedControl(items: ["Sticks & balls", "Sticks"])
         control.translatesAutoresizingMaskIntoConstraints = false
         control.backgroundColor = .none
         control.tintColor = UIColor(red:0.23, green:0.67, blue:0.93, alpha:1.0)
@@ -75,7 +100,6 @@ class LigandController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         view.backgroundColor = C_DarkBackground
         
         view.addSubview(sceneView)
@@ -84,7 +108,6 @@ class LigandController: UIViewController {
         view.addSubview(formula)
         loadingWheel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
         loadingWheel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        
         
         modeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         modeButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -125,12 +148,5 @@ class LigandController: UIViewController {
         scene.rootNode.addChildNode(ligandNode!)
     }
     
-}
-
-extension SCNGeometry {
-    var color: UIColor? {
-        set { firstMaterial?.diffuse.contents = newValue }
-        get { return firstMaterial?.diffuse.contents as? UIColor }
-    }
 }
 
