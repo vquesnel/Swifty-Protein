@@ -127,11 +127,8 @@ class LigandController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-<<<<<<< HEAD
-=======
         let button = UIBarButtonItem(image: UIImage(named: "animation")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleAnimation))
         navigationItem.rightBarButtonItem = button
->>>>>>> add animation
         view.backgroundColor = C_DarkBackground
 
         view.addSubview(sceneView)
