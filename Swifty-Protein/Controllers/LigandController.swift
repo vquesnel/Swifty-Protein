@@ -34,7 +34,7 @@ class LigandController: UIViewController {
         return spin
     }()
 
-    private let camera: SCNNode = {
+    private lazy var camera: SCNNode = {
         let node = SCNNode()
         node.camera = SCNCamera()
         node.camera?.automaticallyAdjustsZRange = true

@@ -332,10 +332,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KZLCG27XYU;
+				DEVELOPMENT_TEAM = 7CT92MF359;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "kwiessle.Swifty-Protein";
+				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -347,10 +347,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KZLCG27XYU;
+				DEVELOPMENT_TEAM = 7CT92MF359;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "kwiessle.Swifty-Protein";
+				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
