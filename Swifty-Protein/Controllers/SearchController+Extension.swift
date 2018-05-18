@@ -10,7 +10,7 @@ import UIKit
 
 extension SearchController {
     
-    
+    static var clickedIndex = false
     // NUMBER OF CELLS
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,13 +42,16 @@ extension SearchController {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (SearchController.clickedIndex){ return }
+        SearchController.clickedIndex = true
         var name = String()
         if isSearching { name = filteredLigands[indexPath.item] }
         else { name = ligands[indexPath.item] }
-        
+
         RCSBService.shared.getLigand(name: name) { data in
             guard let ligand = data else { return }
             self.ligandController.ligand = ligand
+            SearchController.clickedIndex = false
             self.navigationController?.pushViewController(self.ligandController, animated: true)
         }
         
