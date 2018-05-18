@@ -7,13 +7,11 @@
 //
 
 import Foundation
+import SceneKit
 
 class RCSBService {
     
     static let shared = RCSBService()
-    
-    
-    
     
     /* Creating an array of Ligands from ressource file  */
     
@@ -22,10 +20,6 @@ class RCSBService {
         guard let text = try? String(contentsOf: URL(fileURLWithPath: location)) else { fatalError() }
         return text.components(separatedBy: "\n").filter { $0 != "" }
     }
-    
-    
-    
-    
     
     /* Fetching 3D coordinates about a given Ligand */
     
@@ -47,10 +41,6 @@ class RCSBService {
             }.resume()
     }
     
-    
-    
-    
-    
     /* Fetching informations about a given Ligand */
     
     func getInfos(name: String, completion: @escaping(Infos?) -> Void) {
@@ -64,11 +54,7 @@ class RCSBService {
             completion(data)
         }
     }
-    
-    
-    
-    
-    
+
     /* Return a complete Ligand */
     
     func getLigand(name: String, completion: @escaping(Ligand?) -> Void) {
@@ -82,9 +68,6 @@ class RCSBService {
         }
     }
     
-    
-    
-    
     /* Parsing SDF file */
     
     func parseData(file: String) -> Ligand? {
@@ -93,6 +76,9 @@ class RCSBService {
         let totalAtom = Int(header[0])!
         let lastAtom = totalAtom + 3
         let lastBond = Int(header[1])! + lastAtom
+        var totalX = Double(0)
+        var totalY = Double(0)
+        var totalZ = Double(0)
         
         var atoms = [Atom]()
         var bonds = [Bond]()
@@ -100,13 +86,12 @@ class RCSBService {
         for i in 4...lastBond {
             let infos = lines[i].components(separatedBy: " ").filter { $0 != "" }
             if i <= lastAtom {
-                guard var x = Double(infos[0]) else { return nil }
-                //                x = x / Double(totalAtom) + 2
-                guard var y = Double(infos[1]) else { return nil }
-                //                y = y / Double(totalAtom) + 2
-                guard var z = Double(infos[2]) else { return nil }
-                //                z = z / Double(totalAtom) + 2
-                
+                guard let x = Double(infos[0]) else { return nil }
+                guard let y = Double(infos[1]) else { return nil }
+                guard let z = Double(infos[2]) else { return nil }
+                totalX += x
+                totalY += y
+                totalZ += z
                 let atom = Atom(id: i - 3, type: infos[3], posX: x, posY: y, posZ: z)
                 atoms.append(atom)
             } else {
@@ -115,7 +100,7 @@ class RCSBService {
                 bonds.append(bond)
             }
         }
-        return Ligand(name: lines[0], atoms: atoms, bonds: bonds, infos: nil)
+        return Ligand(name: lines[0], atoms: atoms, bonds: bonds, infos: nil, centroid: SCNVector3(totalX / Double(totalAtom), totalY / Double(totalAtom),totalZ / Double(totalAtom)))
     }
     
 }

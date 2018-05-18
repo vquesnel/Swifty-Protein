@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SceneKit
 
 struct Results : Decodable {
     let formula : String
@@ -38,5 +38,6 @@ struct Ligand {
     let atoms : [Atom]
     let bonds : [Bond]
     var infos : Infos?
+    var centroid: SCNVector3?
 }
 

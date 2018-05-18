@@ -47,7 +47,7 @@ extension SearchController {
         var name = String()
         if isSearching { name = filteredLigands[indexPath.item] }
         else { name = ligands[indexPath.item] }
-
+        ligandController.title = name
         RCSBService.shared.getLigand(name: name) { data in
             guard let ligand = data else { return }
             self.ligandController.ligand = ligand

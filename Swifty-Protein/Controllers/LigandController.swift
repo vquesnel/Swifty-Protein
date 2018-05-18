@@ -13,8 +13,6 @@ class LigandController: UIViewController {
     
     private var ligandNode: SCNNode?
     
-    
-    
     var ligand : Ligand? {
         didSet {
             guard let ligand = self.ligand else { return }
@@ -22,30 +20,6 @@ class LigandController: UIViewController {
             self.loadingWheel.stopAnimating()
             self.formula.text = infos.results[0].formula
             self.generateModel(with: ligand)
-            let sphere = SCNSphere()
-            let node = SCNNode(geometry: sphere)
-            node.position = SCNVector3(0, 0, 0)
-            sphere.color = .blue
-            ligandNode?.addChildNode(node)
-            
-            
-//            let light = SCNLight()
-//            light.type = .directional
-//            light.spotInnerAngle = -45
-//            light.spotOuterAngle = -45
-//            light.color = UIColor(white: 1, alpha: 0.2)
-//            
-//            let light2 = SCNLight()
-//            light2.type = .directional
-//            light2.spotInnerAngle = 45
-//            light2.spotOuterAngle = 45
-//            light2.color = UIColor(white: 1, alpha: 0.2)
-//            let first = ligandNode?.childNodes.first
-//            let focus = first
-//            focus?.position = SCNVector3(x: (first?.position.x)!, y: (first?.position.y)!, z: (first?.position.z)! + 10)
-//            sceneView.pointOfView = focus
-//            
-//            ligandNode?.addChildNode(light)
         }
     }
     
@@ -53,16 +27,13 @@ class LigandController: UIViewController {
         let node = SCNNode()
         node.camera = SCNCamera()
         node.camera?.automaticallyAdjustsZRange = true
-        node.position = SCNVector3(0, 0, 20)
+        node.position = SCNVector3(0, 0, 50)
         return node
     }()
-    
-    
     
     private lazy var scene: SCNScene = {
         let scene = SCNScene()
         scene.rootNode.addChildNode(camera)
-        //        scene.background =
         return scene
     }()
     
@@ -70,7 +41,6 @@ class LigandController: UIViewController {
         let view = SCNView()
         view.allowsCameraControl = true
         view.scene = scene
-        //        view.autoenablesDefaultLighting = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = C_DarkBackground
         return view
@@ -102,7 +72,6 @@ class LigandController: UIViewController {
         return field
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,7 +82,6 @@ class LigandController: UIViewController {
         view.addSubview(loadingWheel)
         view.addSubview(modeButton)
         view.addSubview(formula)
-        
         loadingWheel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
         loadingWheel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         
@@ -133,16 +101,16 @@ class LigandController: UIViewController {
         sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
-    
-    private func generateModel(with atoms: [Atom]) {
+    private func generateModel(with atoms: [Atom], centroid: SCNVector3?) {
+        guard let centroid = centroid else { return }
         atoms.forEach { atom in
             let sphere = SCNSphere()
             let node = SCNNode(geometry: sphere)
             let material = SCNMaterial()
-            
-            node.position = SCNVector3(atom.posX, atom.posY, atom.posZ)
+            node.position = SCNVector3(atom.posX - Double(centroid.x), atom.posY - Double(centroid.y), atom.posZ - Double(centroid.z))
             material.diffuse.contents = UIColor.CPK[atom.type]
             sphere.materials = [material]
+ 
             ligandNode?.addChildNode(node)
         }
     }
@@ -152,20 +120,17 @@ class LigandController: UIViewController {
         ligandNode?.removeFromParentNode()
         ligandNode = SCNNode()
         
-        generateModel(with: ligand.atoms)
+        generateModel(with: ligand.atoms, centroid: ligand.centroid)
         ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
         scene.rootNode.addChildNode(ligandNode!)
     }
     
 }
+
 extension SCNGeometry {
     var color: UIColor? {
         set { firstMaterial?.diffuse.contents = newValue }
         get { return firstMaterial?.diffuse.contents as? UIColor }
     }
 }
-
-
-
-
 
