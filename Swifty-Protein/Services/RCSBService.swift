@@ -13,6 +13,11 @@ class RCSBService {
     
     static let shared = RCSBService()
     
+    enum fileType : String {
+        case ideal = "ideal"
+        case model = "model"
+    }
+    
     /* Creating an array of Ligands from ressource file  */
     
     func getRessource() -> [String] {
@@ -22,8 +27,8 @@ class RCSBService {
     }
     
     /* Fetching 3D coordinates about a given Ligand */
-    func getScenery(name: String, completion: @escaping(Ligand?) -> Void) {
-        guard let url = URL(string: "https://files.rcsb.org/ligands/view/\(name)_ideal.sdf") else { return }
+    func getScenery(name: String, type: fileType, completion: @escaping(Ligand?) -> Void) {
+        guard let url = URL(string: "https://files.rcsb.org/ligands/view/\(name)_\(type).sdf") else { return }
         URLSession.shared.dataTask(with: url) { data, res, error in
             guard let response = res as? HTTPURLResponse else {
                 DispatchQueue.main.async { completion(nil) }
@@ -44,10 +49,18 @@ class RCSBService {
                     DispatchQueue.main.async { completion(nil) }
                     return
                 }
-                DispatchQueue.main.async {completion(self.parseData(file: file)) }
+                guard let ligands = self.parseData(file: file) else {
+                    self.getScenery(name: name, type: .model, completion: { ligands in
+                        DispatchQueue.main.async { completion(ligands) }
+                    })
+                    return
+                }
+                DispatchQueue.main.async { completion(ligands) }
             }
         }.resume()
     }
+    
+
     
     /* Fetching informations about a given Ligand */
     func getInfos(name: String, completion: @escaping(Infos?) -> Void) {
@@ -64,7 +77,7 @@ class RCSBService {
 
     /* Return a complete Ligand */
     func getLigand(name: String, completion: @escaping(Ligand?) -> Void) {
-        self.getScenery(name: name) { data in
+        self.getScenery(name: name, type: .ideal) { data in
             guard var ligand = data else { completion(nil); return }
             self.getInfos(name: name, completion: { data in
                 guard let infos = data else { completion(nil); return }
@@ -78,6 +91,7 @@ class RCSBService {
     
     func parseData(file: String) -> Ligand? {
         let lines = file.components(separatedBy: "\n")
+        guard lines.first != "" else { return nil }
         let header = lines[3].components(separatedBy: " ").filter { $0 != "" }
         let totalAtom = Int(header[0])!
         let lastAtom = totalAtom + 3
