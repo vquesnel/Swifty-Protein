@@ -24,7 +24,7 @@ class RCSBService {
     /* Fetching 3D coordinates about a given Ligand */
     
     func getScenery(name: String, completion: @escaping(Ligand?) -> Void) {
-        guard let url = URL(string: "https://files.rcsb.org/ligands/view/\(name)_model.sdf") else { return }
+        guard let url = URL(string: "https://files.rcsb.org/ligands/view/\(name)_ideal.sdf") else { return }
         URLSession.shared.dataTask(with: url) { data, res, error in
             guard error == nil, let data = data else {
                 print("Request to rcsb.org failed.");
