@@ -10,22 +10,22 @@ import Foundation
 import SceneKit
 
 class RCSBService {
-    
+
     static let shared = RCSBService()
-    
+
     enum fileType : String {
         case ideal = "ideal"
         case model = "model"
     }
-    
+
     /* Creating an array of Ligands from ressource file  */
-    
+
     func getRessource() -> [String] {
         guard let location = Bundle.main.path(forResource: "ligands", ofType: "txt") else { fatalError() }
         guard let text = try? String(contentsOf: URL(fileURLWithPath: location)) else { fatalError() }
         return text.components(separatedBy: "\n").filter { $0 != "" }
     }
-    
+
     /* Fetching 3D coordinates about a given Ligand */
     func getScenery(name: String, type: fileType, completion: @escaping(Ligand?) -> Void) {
         guard let url = URL(string: "https://files.rcsb.org/ligands/view/\(name)_\(type).sdf") else { return }
@@ -59,9 +59,9 @@ class RCSBService {
             }
         }.resume()
     }
-    
 
-    
+
+
     /* Fetching informations about a given Ligand */
     func getInfos(name: String, completion: @escaping(Infos?) -> Void) {
         guard let url = URL(string: "https://rest.rcsb.org/rest/ligands/\(name)") else {
@@ -86,9 +86,9 @@ class RCSBService {
             })
         }
     }
-    
+
     /* Parsing SDF file */
-    
+
     func parseData(file: String) -> Ligand? {
         let lines = file.components(separatedBy: "\n")
         guard lines.first != "" else { return nil }
@@ -100,7 +100,7 @@ class RCSBService {
         var totalZ = Double(0)
         var atoms = [Atom]()
         var bonds = [Bond]()
-        
+
         for i in 4...lastBond {
             let infos = lines[i].components(separatedBy: " ").filter { $0 != "" }
             if i <= lastAtom {
@@ -123,7 +123,7 @@ class RCSBService {
 }
 
 extension String {
-    
+
     subscript (bounds: CountableClosedRange<Int>) -> String {
         let start = index(startIndex, offsetBy: bounds.lowerBound)
         let end = index(startIndex, offsetBy: bounds.upperBound)
@@ -134,7 +134,7 @@ extension String {
         let end = index(startIndex, offsetBy: bounds.upperBound)
         return String(self[start..<end])
     }
-    
+
     func trim() -> String {
         return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
     }
