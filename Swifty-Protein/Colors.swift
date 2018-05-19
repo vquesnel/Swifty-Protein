@@ -29,6 +29,10 @@ let C_Blue : UIColor =  {
     return UIColor(red:0.36, green:0.71, blue:0.96, alpha:0.3)
 }()
 
+let C_Error : UIColor = {
+    return UIColor(red:0.96, green:0.13, blue:0.08, alpha:0.3)
+}()
+
 
 func C_addBackground(image: String) -> UIImageView {
     let view = UIImageView(frame: UIScreen.main.bounds)

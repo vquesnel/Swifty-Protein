@@ -29,8 +29,8 @@ class LigandController: UIViewController {
 
     private let spin : CABasicAnimation = {
         let spin = CABasicAnimation(keyPath: "rotation")
-        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: 0))
-        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: Float.pi * 2))
+        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 1, w: 0))
+        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 1, w: Float.pi * 2))
         spin.duration = 5
         spin.repeatCount = .infinity
         return spin

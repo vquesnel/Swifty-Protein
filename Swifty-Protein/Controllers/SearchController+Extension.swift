@@ -45,12 +45,22 @@ extension SearchController {
         else { name = ligands[indexPath.item] }
         ligandController.title = name
         RCSBService.shared.getLigand(name: name) { data in
-            guard let ligand = data else { return }
-            self.ligandController.ligand = ligand
-            SearchController.clickedIndex = false
-            self.navigationController?.pushViewController(self.ligandController, animated: true)
-            cell.loadingWheel.stopAnimating()
-            tableView.deselectRow(at: indexPath, animated: true)
+            if let ligand = data {
+                self.ligandController.ligand = ligand
+                SearchController.clickedIndex = false
+                self.navigationController?.pushViewController(self.ligandController, animated: true)
+                cell.loadingWheel.stopAnimating()
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+            else {
+                SearchController.clickedIndex = false
+                let alert = UIAlertController(title: "Error", message: "This Protein doesn't exists", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                cell.loadingWheel.stopAnimating()
+                cell.backgroundColor = C_Error
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
         }
     }
     

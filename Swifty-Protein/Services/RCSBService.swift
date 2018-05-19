@@ -22,27 +22,34 @@ class RCSBService {
     }
     
     /* Fetching 3D coordinates about a given Ligand */
-    
     func getScenery(name: String, completion: @escaping(Ligand?) -> Void) {
         guard let url = URL(string: "https://files.rcsb.org/ligands/view/\(name)_ideal.sdf") else { return }
         URLSession.shared.dataTask(with: url) { data, res, error in
-            guard error == nil, let data = data else {
-                print("Request to rcsb.org failed.");
+            guard let response = res as? HTTPURLResponse else {
                 DispatchQueue.main.async { completion(nil) }
                 return
             }
-            guard let file = String(data: data, encoding: .utf8) else {
-                print("Data encoding failed.");
+            if (response.statusCode < 200 || response.statusCode > 299) {
                 DispatchQueue.main.async { completion(nil) }
                 return
-                
             }
-            DispatchQueue.main.async {completion(self.parseData(file: file)) }
-            }.resume()
+            else {
+                guard error == nil, let data = data else {
+                    print("Request to rcsb.org failed.");
+                    DispatchQueue.main.async { completion(nil) }
+                    return
+                }
+                guard let file = String(data: data, encoding: .utf8) else {
+                    print("Data encoding failed.");
+                    DispatchQueue.main.async { completion(nil) }
+                    return
+                }
+                DispatchQueue.main.async {completion(self.parseData(file: file)) }
+            }
+        }.resume()
     }
     
     /* Fetching informations about a given Ligand */
-    
     func getInfos(name: String, completion: @escaping(Infos?) -> Void) {
         guard let url = URL(string: "https://rest.rcsb.org/rest/ligands/\(name)") else {
             completion(nil)
@@ -56,7 +63,6 @@ class RCSBService {
     }
 
     /* Return a complete Ligand */
-    
     func getLigand(name: String, completion: @escaping(Ligand?) -> Void) {
         self.getScenery(name: name) { data in
             guard var ligand = data else { completion(nil); return }
