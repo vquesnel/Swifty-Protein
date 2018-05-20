@@ -102,6 +102,7 @@ class LigandController: UIViewController {
         field.isUserInteractionEnabled = false
         field.textColor = C_TextLight
         field.font = UIFont.systemFont(ofSize: 25)
+        field.adjustsFontSizeToFitWidth = true
         field.textAlignment = .center
         field.allowsEditingTextAttributes = false
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -155,31 +156,22 @@ class LigandController: UIViewController {
             print(atom)
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let animationButton = UIBarButtonItem(image: UIImage(named: "animation")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleAnimation))
-        let shareButton = UIBarButtonItem(image: UIImage(named: "share")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleShare))
-        navigationItem.rightBarButtonItems = [shareButton, animationButton]
-        view.backgroundColor = C_DarkBackground
-
-        view.addSubview(sceneView)
-        view.addSubview(modeButton)
-        view.addSubview(formula)
-
-        modeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
-        modeButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        modeButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-
-        formula.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        formula.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        formula.topAnchor.constraint(equalTo: modeButton.bottomAnchor, constant: 30).isActive = true
-
-        sceneView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        sceneView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    
+    private func generateModel(with ligand: Ligand, mode: Int) {
+        ligandNode?.removeFromParentNode()
+        ligandNode = SCNNode()
+        
+        switch mode {
+        case 0 :
+            generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
+        case 2 :
+            generateModel(with: ligand.atoms, centroid: ligand.centroid)
+        default:
+            generateModel(with: ligand.atoms, centroid: ligand.centroid)
+            generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
+        }
+        ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
+        scene.rootNode.addChildNode(ligandNode!)
     }
 
     private func generateModel(with atoms: [Atom], centroid: SCNVector3?) {
@@ -211,27 +203,10 @@ class LigandController: UIViewController {
         }
     }
     
-    private func generateModel(with ligand: Ligand, mode: Int) {
-        ligandNode?.removeFromParentNode()
-        ligandNode = SCNNode()
-
-        switch mode {
-            case 0 :
-                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
-            case 2 :
-                generateModel(with: ligand.atoms, centroid: ligand.centroid)
-            default:
-                generateModel(with: ligand.atoms, centroid: ligand.centroid)
-                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
-        }
-        ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
-        scene.rootNode.addChildNode(ligandNode!)
-    }
-    
     private func generateCylinders(value: Float, vectors: [SCNVector3], atoms: [Atom], bond: Bond, radius: CGFloat = 0.05) {
         guard let ligandNode = ligandNode else { return }
-        let newV1 = updateVector(value: value, vector: vectors[0])
-        let newV2 = updateVector(value: value, vector: vectors[1])
+        let newV1 = vectors[0].updateValue(value: value)
+        let newV2 = vectors[1].updateValue(value: value)
         let centroid = [newV1, newV2].centroid()
         [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
             let sphere = SCNSphere(radius: radius)
@@ -245,13 +220,31 @@ class LigandController: UIViewController {
         ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: radius, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
         ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: radius, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
     }
-
-    private func updateVector(value: Float, vector: SCNVector3) -> SCNVector3 {
-        var vec = vector
-        vec.x = vector.x + value
-        vec.y = vector.y
-        vec.z = vector.z
-        return vec
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let animationButton = UIBarButtonItem(image: UIImage(named: "animation")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleAnimation))
+        let shareButton = UIBarButtonItem(image: UIImage(named: "share")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleShare))
+        navigationItem.rightBarButtonItems = [shareButton, animationButton]
+        view.backgroundColor = C_DarkBackground
+        
+        view.addSubview(sceneView)
+        view.addSubview(modeButton)
+        view.addSubview(formula)
+        
+        modeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        modeButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        modeButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        formula.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        formula.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        formula.topAnchor.constraint(equalTo: modeButton.bottomAnchor, constant: 30).isActive = true
+        
+        sceneView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        sceneView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
 
 }
@@ -274,5 +267,13 @@ extension Array where Element == SCNVector3 {
 extension SCNVector3 {
     static func ==(rhs : SCNVector3, lhs : SCNVector3) -> Bool {
         return rhs.x == lhs.x && rhs.y == lhs.y && rhs.z == lhs.z
+    }
+    
+    func updateValue(value: Float) -> SCNVector3 {
+        var vec = self
+        vec.x = self.x + value
+        vec.y = self.y
+        vec.z = self.z
+        return vec
     }
 }
