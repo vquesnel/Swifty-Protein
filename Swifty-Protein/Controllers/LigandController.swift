@@ -36,7 +36,7 @@ class LigandController: UIViewController {
         return spin
     }()
 
-    private weak var camera: SCNNode? = {
+    private lazy var camera: SCNNode = {
         let node = SCNNode()
         node.camera = SCNCamera()
         node.camera?.automaticallyAdjustsZRange = true
@@ -59,9 +59,7 @@ class LigandController: UIViewController {
         scene.rootNode.addChildNode(fillLight)
         scene.rootNode.addChildNode(keyLight)
         scene.rootNode.addChildNode(ambientLight)
-        if let camera = camera {
-            scene.rootNode.addChildNode(camera)
-        }
+        scene.rootNode.addChildNode(camera)
 
         return scene
     }()
@@ -130,7 +128,7 @@ class LigandController: UIViewController {
         guard let ligand = self.ligand else { return }
         generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
     }
-    
+
     @objc func handleAtomInfo(sender: UIGestureRecognizer) {
         if sender.state == .ended {
             let location = sender.location(in: sceneView)
