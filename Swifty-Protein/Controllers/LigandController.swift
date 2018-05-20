@@ -126,6 +126,11 @@ class LigandController: UIViewController {
         isAnimatated = !isAnimatated
     }
 
+    @objc func handleDisplay() {
+        guard let ligand = self.ligand else { return }
+        generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
+    }
+    
     @objc func handleAtomInfo(sender: UIGestureRecognizer) {
         if sender.state == .ended {
             let location = sender.location(in: sceneView)
