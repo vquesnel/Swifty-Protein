@@ -11,7 +11,7 @@ import SceneKit
 
 class   CylinderLine: SCNNode
 {
-    init(parent: SCNNode, v1: SCNVector3, v2: SCNVector3, radius: CGFloat, radSegmentCount: Int,color: UIColor) {
+    init(parent: SCNNode, v1: SCNVector3, v2: SCNVector3, radius: CGFloat, radSegmentCount: Int,color: UIColor?) {
 
         super.init()
         
@@ -24,7 +24,12 @@ class   CylinderLine: SCNNode
         zAlign.eulerAngles.x = Float.pi / 2
         let cyl = SCNCylinder(radius: radius, height: CGFloat(height))
         cyl.radialSegmentCount = radSegmentCount
-        cyl.firstMaterial?.diffuse.contents = color
+        if let color = color {
+            cyl.firstMaterial?.diffuse.contents = color
+        }
+        else {
+            cyl.firstMaterial?.diffuse.contents = UIColor.gray
+        }
         let nodeCyl = SCNNode(geometry: cyl )
         nodeCyl.position.y = Float (-height / 2)
         zAlign.addChildNode(nodeCyl)

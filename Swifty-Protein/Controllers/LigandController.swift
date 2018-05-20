@@ -165,18 +165,58 @@ class LigandController: UIViewController {
         }
     }
     
-    private func generateModel(with bonds: [Bond], atoms: [Atom], centroid: SCNVector3?, color: UIColor) {
+    private func generateModel(with bonds: [Bond], atoms: [Atom], centroid: SCNVector3?) {
         guard let centroid = centroid else { return }
         guard let ligandNode = ligandNode else { return }
         bonds.forEach { bond in
             let v1 = SCNVector3(atoms[bond.left - 1].posX - Double(centroid.x), atoms[bond.left - 1].posY - Double(centroid.y), atoms[bond.left - 1].posZ - Double(centroid.z))
             let v2 = SCNVector3(atoms[bond.right - 1].posX - Double(centroid.x), atoms[bond.right - 1].posY - Double(centroid.y), atoms[bond.right - 1].posZ - Double(centroid.z))
+            var centroid = [v1, v2].centroid()
             if bond.link == 2 {
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: updateVector(value: -0.1, vector: v1), v2: updateVector(value: -0.1, vector: v2), radius: 0.05, radSegmentCount: 25, color: color))
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: updateVector(value: 0.1, vector: v1), v2: updateVector(value: 0.1, vector: v2), radius: 0.05, radSegmentCount: 25, color: color))
+                var newV1 = updateVector(value: -0.1, vector: v1)
+                var newV2 = updateVector(value: -0.1, vector: v2)
+                centroid = [newV1, newV2].centroid()
+                [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
+                    let sphere = SCNSphere(radius: 0.05)
+                    let node = SCNNode(geometry: sphere)
+                    let material = SCNMaterial()
+                    node.position = vector[0] as! SCNVector3
+                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+                    sphere.materials = [material]
+                    ligandNode.addChildNode(node)
+                }
+               
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+                
+                newV1 = updateVector(value: 0.1, vector: v1)
+                newV2 = updateVector(value: 0.1, vector: v2)
+                centroid = [newV1, newV2].centroid()
+                
+                [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
+                    let sphere = SCNSphere(radius: 0.05)
+                    let node = SCNNode(geometry: sphere)
+                    let material = SCNMaterial()
+                    node.position = vector[0] as! SCNVector3
+                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+                    sphere.materials = [material]
+                    ligandNode.addChildNode(node)
+                }
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
             }
             else {
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: v1, v2: v2, radius: 0.05, radSegmentCount: 25, color: color))
+                [[v1, atoms[bond.left - 1].type], [v2, atoms[bond.right - 1].type]].forEach { vector in
+                    let sphere = SCNSphere(radius: 0.1)
+                    let node = SCNNode(geometry: sphere)
+                    let material = SCNMaterial()
+                    node.position = vector[0] as! SCNVector3
+                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+                    sphere.materials = [material]
+                    ligandNode.addChildNode(node)
+                }
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: v1, v2: centroid, radius: 0.1, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: v2, radius: 0.1, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
             }
         }
     }
@@ -187,12 +227,12 @@ class LigandController: UIViewController {
         
         switch mode {
             case 0 :
-                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid, color : .gray)
+                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
             case 2 :
                 generateModel(with: ligand.atoms, centroid: ligand.centroid)
             default:
                 generateModel(with: ligand.atoms, centroid: ligand.centroid)
-                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid, color : .gray)
+                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
         }
         ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
         scene.rootNode.addChildNode(ligandNode!)
@@ -201,9 +241,26 @@ class LigandController: UIViewController {
     private func updateVector(value: Float, vector: SCNVector3) -> SCNVector3 {
         var vec = SCNVector3()
         vec.x = vector.x + value
-        vec.y = vector.y + value
-        vec.z = vector.z + value
+        vec.y = vector.y
+        vec.z = vector.z
         return vec
     }
 
 }
+
+extension Array where Element == SCNVector3 {
+    
+    func centroid() -> SCNVector3 {
+        var totalX = Float(0)
+        var totalY = Float(0)
+        var totalZ = Float(0)
+        self.forEach { vector in
+            totalX += vector.x
+            totalY += vector.y
+            totalZ += vector.z
+        }
+        return SCNVector3(totalX / Float(self.count), totalY / Float(self.count), totalZ / Float(self.count))
+    }
+}
+
+

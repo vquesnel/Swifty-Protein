@@ -92,14 +92,12 @@ class RCSBService {
     func parseData(file: String) -> Ligand? {
         let lines = file.components(separatedBy: "\n")
         guard lines.first != "" else { return nil }
-        let header = lines[3].components(separatedBy: " ").filter { $0 != "" }
-        let totalAtom = Int(header[0])!
+        let totalAtom = Int(lines[3][(0 ..< 3)].trim())!
         let lastAtom = totalAtom + 3
-        let lastBond = Int(header[1])! + lastAtom
+        let lastBond = Int(lines[3][(3 ..< 6)].trim())! + lastAtom
         var totalX = Double(0)
         var totalY = Double(0)
         var totalZ = Double(0)
-        
         var atoms = [Atom]()
         var bonds = [Bond]()
         
@@ -115,13 +113,29 @@ class RCSBService {
                 let atom = Atom(id: i - 3, type: infos[3], posX: x, posY: y, posZ: z)
                 atoms.append(atom)
             } else {
-                guard let left = Int(infos[0]), let right = Int(infos[1]), let links = Int(infos[2]) else { return nil }
+                guard let left = Int(lines[i][(0 ..< 3)].trim()), let right = Int(lines[i][(3 ..< 6)].trim()), let links = Int(infos[2]) else { return nil }
                 let bond = Bond(left: left, right: right, link: links)
                 bonds.append(bond)
             }
         }
         return Ligand(name: lines[0], atoms: atoms, bonds: bonds, infos: nil, centroid: SCNVector3(totalX / Double(totalAtom), totalY / Double(totalAtom),totalZ / Double(totalAtom)))
     }
-    
 }
 
+extension String {
+    
+    subscript (bounds: CountableClosedRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return  String(self[start...end])
+    }
+    subscript (bounds: CountableRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start..<end])
+    }
+    
+    func trim() -> String {
+        return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
+    }
+}
