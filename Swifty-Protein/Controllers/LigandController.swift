@@ -80,6 +80,7 @@ class LigandController: UIViewController {
         view.allowsCameraControl = true
         view.scene = scene
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleAtomInfo)))
         view.backgroundColor = C_DarkBackground
         return view
     }()
@@ -97,6 +98,8 @@ class LigandController: UIViewController {
 
     let formula : UITextField = {
         let field = UITextField()
+        field.isEnabled = false
+        field.isUserInteractionEnabled = false
         field.textColor = C_TextLight
         field.font = UIFont.systemFont(ofSize: 25)
         field.textAlignment = .center
@@ -120,10 +123,21 @@ class LigandController: UIViewController {
         }
         isAnimatated = !isAnimatated
     }
-    
+
     @objc func handleDisplay() {
         guard let ligand = self.ligand else { return }
         generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
+    }
+
+    @objc func handleAtomInfo(sender: UIGestureRecognizer) {
+        if sender.state == .ended {
+            let location = sender.location(in: sceneView)
+            let targetPoint = sceneView.hitTest(location, options: nil)
+            guard let targetNode = targetPoint.first?.node.position else { return }
+            guard let centroid = ligand?.centroid else { return }
+            let atom = ligand?.atoms.first(where: { SCNVector3($0.posX - Double(centroid.x), $0.posY - Double(centroid.y), $0.posZ - Double(centroid.z)) == targetNode })
+            print(atom)
+        }
     }
 
     override func viewDidLoad() {
@@ -164,7 +178,7 @@ class LigandController: UIViewController {
             ligandNode.addChildNode(node)
         }
     }
-    
+
     private func generateModel(with bonds: [Bond], atoms: [Atom], centroid: SCNVector3?) {
         guard let centroid = centroid else { return }
         guard let ligandNode = ligandNode else { return }
@@ -185,14 +199,14 @@ class LigandController: UIViewController {
                     sphere.materials = [material]
                     ligandNode.addChildNode(node)
                 }
-               
+
                 ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
                 ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
-                
+
                 newV1 = updateVector(value: 0.1, vector: v1)
                 newV2 = updateVector(value: 0.1, vector: v2)
                 centroid = [newV1, newV2].centroid()
-                
+
                 [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
                     let sphere = SCNSphere(radius: 0.05)
                     let node = SCNNode(geometry: sphere)
@@ -224,7 +238,7 @@ class LigandController: UIViewController {
     private func generateModel(with ligand: Ligand, mode: Int) {
         ligandNode?.removeFromParentNode()
         ligandNode = SCNNode()
-        
+
         switch mode {
             case 0 :
                 generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
@@ -237,7 +251,7 @@ class LigandController: UIViewController {
         ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
         scene.rootNode.addChildNode(ligandNode!)
     }
-    
+
     private func updateVector(value: Float, vector: SCNVector3) -> SCNVector3 {
         var vec = SCNVector3()
         vec.x = vector.x + value
@@ -249,7 +263,7 @@ class LigandController: UIViewController {
 }
 
 extension Array where Element == SCNVector3 {
-    
+
     func centroid() -> SCNVector3 {
         var totalX = Float(0)
         var totalY = Float(0)
@@ -263,4 +277,8 @@ extension Array where Element == SCNVector3 {
     }
 }
 
-
+extension SCNVector3 {
+    static func ==(rhs : SCNVector3, lhs : SCNVector3) -> Bool {
+        return rhs.x == lhs.x && rhs.y == lhs.y && rhs.z == lhs.z
+    }
+}
