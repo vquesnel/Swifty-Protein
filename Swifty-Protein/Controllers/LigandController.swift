@@ -123,7 +123,23 @@ class LigandController: UIViewController {
         }
         isAnimatated = !isAnimatated
     }
-
+    
+    @objc func handleShare(sender: UIButton) {
+        
+        if let ligandName = ligand?.name {
+            let objectsToShare = [ligandName, sceneView.snapshot()] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+            activityVC.popoverPresentationController?.sourceView = sender
+            self.present(activityVC, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "No ligand to share", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Try with an other one", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     @objc func handleDisplay() {
         guard let ligand = self.ligand else { return }
         generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
@@ -143,8 +159,9 @@ class LigandController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let button = UIBarButtonItem(image: UIImage(named: "animation")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleAnimation))
-        navigationItem.rightBarButtonItem = button
+        let animationButton = UIBarButtonItem(image: UIImage(named: "animation")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleAnimation))
+        let shareButton = UIBarButtonItem(image: UIImage(named: "share")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleShare))
+        navigationItem.rightBarButtonItems = [shareButton, animationButton]
         view.backgroundColor = C_DarkBackground
 
         view.addSubview(sceneView)
@@ -181,60 +198,19 @@ class LigandController: UIViewController {
 
     private func generateModel(with bonds: [Bond], atoms: [Atom], centroid: SCNVector3?) {
         guard let centroid = centroid else { return }
-        guard let ligandNode = ligandNode else { return }
         bonds.forEach { bond in
             let v1 = SCNVector3(atoms[bond.left - 1].posX - Double(centroid.x), atoms[bond.left - 1].posY - Double(centroid.y), atoms[bond.left - 1].posZ - Double(centroid.z))
             let v2 = SCNVector3(atoms[bond.right - 1].posX - Double(centroid.x), atoms[bond.right - 1].posY - Double(centroid.y), atoms[bond.right - 1].posZ - Double(centroid.z))
-            var centroid = [v1, v2].centroid()
             if bond.link == 2 {
-                var newV1 = updateVector(value: -0.1, vector: v1)
-                var newV2 = updateVector(value: -0.1, vector: v2)
-                centroid = [newV1, newV2].centroid()
-                [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
-                    let sphere = SCNSphere(radius: 0.05)
-                    let node = SCNNode(geometry: sphere)
-                    let material = SCNMaterial()
-                    node.position = vector[0] as! SCNVector3
-                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
-                    sphere.materials = [material]
-                    ligandNode.addChildNode(node)
-                }
-
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
-
-                newV1 = updateVector(value: 0.1, vector: v1)
-                newV2 = updateVector(value: 0.1, vector: v2)
-                centroid = [newV1, newV2].centroid()
-
-                [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
-                    let sphere = SCNSphere(radius: 0.05)
-                    let node = SCNNode(geometry: sphere)
-                    let material = SCNMaterial()
-                    node.position = vector[0] as! SCNVector3
-                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
-                    sphere.materials = [material]
-                    ligandNode.addChildNode(node)
-                }
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+                generateCylinders(value: -0.1, vectors: [v1,v2], atoms: atoms, bond: bond)
+                generateCylinders(value: 0.1, vectors: [v1,v2], atoms: atoms, bond: bond)
             }
             else {
-                [[v1, atoms[bond.left - 1].type], [v2, atoms[bond.right - 1].type]].forEach { vector in
-                    let sphere = SCNSphere(radius: 0.1)
-                    let node = SCNNode(geometry: sphere)
-                    let material = SCNMaterial()
-                    node.position = vector[0] as! SCNVector3
-                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
-                    sphere.materials = [material]
-                    ligandNode.addChildNode(node)
-                }
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: v1, v2: centroid, radius: 0.1, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
-                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: v2, radius: 0.1, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+                generateCylinders(value: 0, vectors: [v1, v2], atoms: atoms, bond: bond, radius: 0.1)
             }
         }
     }
-
+    
     private func generateModel(with ligand: Ligand, mode: Int) {
         ligandNode?.removeFromParentNode()
         ligandNode = SCNNode()
@@ -251,9 +227,27 @@ class LigandController: UIViewController {
         ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
         scene.rootNode.addChildNode(ligandNode!)
     }
+    
+    private func generateCylinders(value: Float, vectors: [SCNVector3], atoms: [Atom], bond: Bond, radius: CGFloat = 0.05) {
+        guard let ligandNode = ligandNode else { return }
+        let newV1 = updateVector(value: value, vector: vectors[0])
+        let newV2 = updateVector(value: value, vector: vectors[1])
+        let centroid = [newV1, newV2].centroid()
+        [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
+            let sphere = SCNSphere(radius: radius)
+            let node = SCNNode(geometry: sphere)
+            let material = SCNMaterial()
+            node.position = vector[0] as! SCNVector3
+            material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+            sphere.materials = [material]
+            ligandNode.addChildNode(node)
+        }
+        ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: radius, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+        ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: radius, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+    }
 
     private func updateVector(value: Float, vector: SCNVector3) -> SCNVector3 {
-        var vec = SCNVector3()
+        var vec = vector
         vec.x = vector.x + value
         vec.y = vector.y
         vec.z = vector.z
