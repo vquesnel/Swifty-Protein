@@ -20,7 +20,6 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     var filteredLigands = [String]()
     var isSearching = false
     
-    
     lazy var tableView : UITableView = {
         let view = UITableView()
         view.delegate = self
@@ -31,7 +30,6 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
     
     lazy var searchBar : UISearchBar = {
         let bar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 70))
@@ -47,7 +45,6 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         bar.keyboardAppearance = .dark
         return bar
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,8 +66,6 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         authenticate()
     }
     
-    
-    
     func setupNavBar() {
         let navigationTitle = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 140, height: 22))
         
@@ -88,12 +83,9 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         navigationItem.titleView = navigationTitle
     }
     
-    
     func authenticate() {
         navigationController?.present(loginController, animated: false, completion: nil)
     }
-    
-    
 }
 
 

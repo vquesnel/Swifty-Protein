@@ -14,12 +14,14 @@ class LigandController: UIViewController {
     private var ligandNode: SCNNode?
 
     var ligand : Ligand? {
+        willSet {
+            modeButton.selectedSegmentIndex = 1
+        }
         didSet {
             guard let ligand = self.ligand else { return }
             guard let infos = ligand.infos else { return }
-            self.loadingWheel.stopAnimating()
             self.formula.text = infos.results[0].formula
-            self.generateModel(with: ligand)
+            self.generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
         }
     }
 
@@ -27,8 +29,8 @@ class LigandController: UIViewController {
 
     private let spin : CABasicAnimation = {
         let spin = CABasicAnimation(keyPath: "rotation")
-        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 1, y: 1, z: 1, w: 0))
-        spin.toValue = NSValue(scnVector4: SCNVector4(x: 1, y: 1, z: 1, w: Float.pi * 2))
+        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 1, w: 0))
+        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 1, w: Float.pi * 2))
         spin.duration = 5
         spin.repeatCount = .infinity
         return spin
@@ -83,20 +85,14 @@ class LigandController: UIViewController {
     }()
 
     let modeButton : UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Sticks & balls", "Sticks"])
+        let control = UISegmentedControl(items: ["Sticks", "Sticks & balls", "Balls"])
         control.translatesAutoresizingMaskIntoConstraints = false
         control.backgroundColor = .none
         control.tintColor = UIColor(red:0.23, green:0.67, blue:0.93, alpha:1.0)
         control.layer.cornerRadius = 5
         control.selectedSegmentIndex = 1
+        control.addTarget(self, action: #selector(handleDisplay), for: .valueChanged)
         return control
-    }()
-
-    let loadingWheel : UIActivityIndicatorView = {
-        let wheel = UIActivityIndicatorView()
-        wheel.startAnimating()
-        wheel.translatesAutoresizingMaskIntoConstraints = false
-        return wheel
     }()
 
     let formula : UITextField = {
@@ -104,6 +100,7 @@ class LigandController: UIViewController {
         field.textColor = C_TextLight
         field.font = UIFont.systemFont(ofSize: 25)
         field.textAlignment = .center
+        field.allowsEditingTextAttributes = false
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -123,6 +120,11 @@ class LigandController: UIViewController {
         }
         isAnimatated = !isAnimatated
     }
+    
+    @objc func handleDisplay() {
+        guard let ligand = self.ligand else { return }
+        generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,12 +134,8 @@ class LigandController: UIViewController {
         view.backgroundColor = C_DarkBackground
 
         view.addSubview(sceneView)
-        view.addSubview(loadingWheel)
         view.addSubview(modeButton)
         view.addSubview(formula)
-
-        loadingWheel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        loadingWheel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
 
         modeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         modeButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -155,24 +153,114 @@ class LigandController: UIViewController {
 
     private func generateModel(with atoms: [Atom], centroid: SCNVector3?) {
         guard let centroid = centroid else { return }
+        guard let ligandNode = ligandNode else { return }
         atoms.forEach { atom in
-            let sphere = SCNSphere()
+            let sphere = SCNSphere(radius: 0.4)
             let node = SCNNode(geometry: sphere)
             let material = SCNMaterial()
             node.position = SCNVector3(atom.posX - Double(centroid.x), atom.posY - Double(centroid.y), atom.posZ - Double(centroid.z))
             material.diffuse.contents = UIColor.CPK[atom.type]
             sphere.materials = [material]
-            ligandNode?.addChildNode(node)
+            ligandNode.addChildNode(node)
+        }
+    }
+    
+    private func generateModel(with bonds: [Bond], atoms: [Atom], centroid: SCNVector3?) {
+        guard let centroid = centroid else { return }
+        guard let ligandNode = ligandNode else { return }
+        bonds.forEach { bond in
+            let v1 = SCNVector3(atoms[bond.left - 1].posX - Double(centroid.x), atoms[bond.left - 1].posY - Double(centroid.y), atoms[bond.left - 1].posZ - Double(centroid.z))
+            let v2 = SCNVector3(atoms[bond.right - 1].posX - Double(centroid.x), atoms[bond.right - 1].posY - Double(centroid.y), atoms[bond.right - 1].posZ - Double(centroid.z))
+            var centroid = [v1, v2].centroid()
+            if bond.link == 2 {
+                var newV1 = updateVector(value: -0.1, vector: v1)
+                var newV2 = updateVector(value: -0.1, vector: v2)
+                centroid = [newV1, newV2].centroid()
+                [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
+                    let sphere = SCNSphere(radius: 0.05)
+                    let node = SCNNode(geometry: sphere)
+                    let material = SCNMaterial()
+                    node.position = vector[0] as! SCNVector3
+                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+                    sphere.materials = [material]
+                    ligandNode.addChildNode(node)
+                }
+               
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+                
+                newV1 = updateVector(value: 0.1, vector: v1)
+                newV2 = updateVector(value: 0.1, vector: v2)
+                centroid = [newV1, newV2].centroid()
+                
+                [[newV1, atoms[bond.left - 1].type], [newV2, atoms[bond.right - 1].type]].forEach { vector in
+                    let sphere = SCNSphere(radius: 0.05)
+                    let node = SCNNode(geometry: sphere)
+                    let material = SCNMaterial()
+                    node.position = vector[0] as! SCNVector3
+                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+                    sphere.materials = [material]
+                    ligandNode.addChildNode(node)
+                }
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: 0.05, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+            }
+            else {
+                [[v1, atoms[bond.left - 1].type], [v2, atoms[bond.right - 1].type]].forEach { vector in
+                    let sphere = SCNSphere(radius: 0.1)
+                    let node = SCNNode(geometry: sphere)
+                    let material = SCNMaterial()
+                    node.position = vector[0] as! SCNVector3
+                    material.diffuse.contents = UIColor.CPK[vector[1] as! String]
+                    sphere.materials = [material]
+                    ligandNode.addChildNode(node)
+                }
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: v1, v2: centroid, radius: 0.1, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
+                ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: v2, radius: 0.1, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
+            }
         }
     }
 
-    private func generateModel(with ligand: Ligand) {
+    private func generateModel(with ligand: Ligand, mode: Int) {
         ligandNode?.removeFromParentNode()
         ligandNode = SCNNode()
-
-        generateModel(with: ligand.atoms, centroid: ligand.centroid)
+        
+        switch mode {
+            case 0 :
+                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
+            case 2 :
+                generateModel(with: ligand.atoms, centroid: ligand.centroid)
+            default:
+                generateModel(with: ligand.atoms, centroid: ligand.centroid)
+                generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
+        }
         ligandNode?.position = SCNVector3(x: 0, y: 0, z: 0)
         scene.rootNode.addChildNode(ligandNode!)
     }
+    
+    private func updateVector(value: Float, vector: SCNVector3) -> SCNVector3 {
+        var vec = SCNVector3()
+        vec.x = vector.x + value
+        vec.y = vector.y
+        vec.z = vector.z
+        return vec
+    }
 
 }
+
+extension Array where Element == SCNVector3 {
+    
+    func centroid() -> SCNVector3 {
+        var totalX = Float(0)
+        var totalY = Float(0)
+        var totalZ = Float(0)
+        self.forEach { vector in
+            totalX += vector.x
+            totalY += vector.y
+            totalZ += vector.z
+        }
+        return SCNVector3(totalX / Float(self.count), totalY / Float(self.count), totalZ / Float(self.count))
+    }
+}
+
+

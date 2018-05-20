@@ -25,6 +25,11 @@ class LigandCell: UITableViewCell {
         return view
     }()
     
+    let loadingWheel : UIActivityIndicatorView = {
+        let wheel = UIActivityIndicatorView()
+        wheel.translatesAutoresizingMaskIntoConstraints = false
+        return wheel
+    }()
     
     let selectedView : UIView = {
         let view = UIView()
@@ -32,19 +37,19 @@ class LigandCell: UITableViewCell {
         return view
     }()
     
-    
-    
-    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .none
-        selectedBackgroundView = selectedView
+        
         addSubview(name)
         addSubview(separator)
-        
+        addSubview(loadingWheel)
         
         name.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         name.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        loadingWheel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
+        loadingWheel.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
         
         separator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 1).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true

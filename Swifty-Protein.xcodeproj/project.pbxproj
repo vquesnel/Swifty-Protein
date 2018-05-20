@@ -21,6 +21,7 @@
 		0DE6B0A120ADBA6900E9020E /* SearchController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B0A020ADBA6900E9020E /* SearchController+Extension.swift */; };
 		0DE6B0A420ADBA9C00E9020E /* ligands.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B0A320ADBA9C00E9020E /* ligands.txt */; };
 		0DE6B0A620ADBAA900E9020E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B0A520ADBAA900E9020E /* Assets.xcassets */; };
+		57DED4BD20B06CA400B2DDFD /* CylinderLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DED4BC20B06CA400B2DDFD /* CylinderLine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		0DE6B0A020ADBA6900E9020E /* SearchController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchController+Extension.swift"; sourceTree = "<group>"; };
 		0DE6B0A320ADBA9C00E9020E /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ligands.txt; sourceTree = "<group>"; };
 		0DE6B0A520ADBAA900E9020E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		57DED4BC20B06CA400B2DDFD /* CylinderLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderLine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 		0DE6B07720ADB8AF00E9020E /* Swifty-Protein */ = {
 			isa = PBXGroup;
 			children = (
+				57DED4BB20B06C9A00B2DDFD /* Utils */,
 				0DE6B0A520ADBAA900E9020E /* Assets.xcassets */,
 				0DE6B07820ADB8AF00E9020E /* AppDelegate.swift */,
 				0DE6B07A20ADB8AF00E9020E /* Colors.swift */,
@@ -131,6 +134,14 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
+		57DED4BB20B06C9A00B2DDFD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				57DED4BC20B06CA400B2DDFD /* CylinderLine.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -158,7 +169,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Kiefer WIESSLER";
 				TargetAttributes = {
 					0DE6B07420ADB8AF00E9020E = {
@@ -204,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DE6B09620ADB9D600E9020E /* Ligand.swift in Sources */,
+				57DED4BD20B06CA400B2DDFD /* CylinderLine.swift in Sources */,
 				0DE6B09F20ADBA5700E9020E /* SearchController.swift in Sources */,
 				0DE6B07B20ADB8AF00E9020E /* Colors.swift in Sources */,
 				0DE6B08E20ADB98100E9020E /* LigandCell.swift in Sources */,
@@ -234,6 +246,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -241,6 +254,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -291,6 +305,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -298,6 +313,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -334,6 +350,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7CT92MF359;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -349,6 +366,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7CT92MF359;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
 				PRODUCT_NAME = "$(TARGET_NAME)";

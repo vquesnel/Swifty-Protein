@@ -11,16 +11,14 @@ import UIKit
 extension SearchController {
     
     static var clickedIndex = false
-    // NUMBER OF CELLS
     
+    // NUMBER OF CELLS
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching { return filteredLigands.count }
         else { return ligands.count }
     }
     
-    
     // CELLS TYPE
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
         
@@ -30,37 +28,43 @@ extension SearchController {
         return cell
     }
     
-    
     // CELLS HEIGHT
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(60)
     }
-    
-    
+
     // CELLS SELECTION
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (SearchController.clickedIndex){ return }
+        if (SearchController.clickedIndex) { return }
         SearchController.clickedIndex = true
         var name = String()
+        let cell = tableView.cellForRow(at: indexPath) as! LigandCell
+        cell.loadingWheel.startAnimating()
+        cell.selectedBackgroundView = cell.selectedView
         if isSearching { name = filteredLigands[indexPath.item] }
         else { name = ligands[indexPath.item] }
         ligandController.title = name
         RCSBService.shared.getLigand(name: name) { data in
-            guard let ligand = data else { return }
-            self.ligandController.ligand = ligand
-            SearchController.clickedIndex = false
-            self.navigationController?.pushViewController(self.ligandController, animated: true)
+            if let ligand = data {
+                self.ligandController.ligand = ligand
+                SearchController.clickedIndex = false
+                self.navigationController?.pushViewController(self.ligandController, animated: true)
+                cell.loadingWheel.stopAnimating()
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+            else {
+                SearchController.clickedIndex = false
+                let alert = UIAlertController(title: "Error", message: "This Protein doesn't exists", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                cell.loadingWheel.stopAnimating()
+                cell.backgroundColor = C_Error
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
         }
-        
     }
     
-    
-    
     // SEARCHBAR FILTERING
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty { isSearching = false }
         else {
@@ -75,7 +79,6 @@ extension SearchController {
     
     
     // KEYBOARD DIMISS
-    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.endEditing(true)
     }
