@@ -55,7 +55,6 @@ class InfosController: UITableViewController {
                 let value: Any = child.value
                 let subMirror = Mirror(reflecting: value)
                 if subMirror.displayStyle == .optional {
-                    print(subMirror.children.first?.value)
                     cell.value.text = "\(subMirror.children.first?.value ?? "N/A")"
                 } else {
                     cell.value.text = "\(child.value)"
