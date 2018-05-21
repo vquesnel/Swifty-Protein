@@ -11,7 +11,6 @@ import UIKit
 class SearchController : UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     let loginController = LoginController()
-    let ligandController = LigandController()
     
     let ligands : [String] = {
         return RCSBService.shared.getRessource()

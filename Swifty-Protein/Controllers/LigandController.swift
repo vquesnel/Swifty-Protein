@@ -12,8 +12,8 @@ import SceneKit
 class LigandController: UIViewController {
 
     private var ligandNode: SCNNode?
-    
-    
+
+
     lazy var atomLauncher : AtomLauncher = {
         let launcher = AtomLauncher()
         return launcher
@@ -26,21 +26,12 @@ class LigandController: UIViewController {
         didSet {
             guard let ligand = self.ligand else { return }
             guard let infos = ligand.infos else { return }
-            self.formula.text = infos.results[0].formula
+            self.formula.text = infos.results.first?.formula
             self.generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
         }
     }
 
     private var isAnimatated = false
-
-    private let spin : CABasicAnimation = {
-        let spin = CABasicAnimation(keyPath: "rotation")
-        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 1, w: 0))
-        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 1, w: Float.pi * 2))
-        spin.duration = 5
-        spin.repeatCount = .infinity
-        return spin
-    }()
 
     private lazy var camera: SCNNode = {
         let node = SCNNode()
@@ -70,17 +61,6 @@ class LigandController: UIViewController {
         return scene
     }()
 
-    private func createLight(type: SCNLight.LightType, color: UIColor, position: SCNVector3?) -> SCNNode {
-        let node = SCNNode()
-        let light = SCNLight()
-        light.type = type
-        light.color = color
-        node.light = light
-        guard let position = position else { return node }
-        node.position = position
-        return node
-    }
-
     private lazy var sceneView : SCNView = {
         let view = SCNView()
         view.allowsCameraControl = true
@@ -102,6 +82,19 @@ class LigandController: UIViewController {
         return control
     }()
 
+    let infoButton : UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "infos")?.withRenderingMode(.alwaysTemplate)
+        button.contentMode = .scaleAspectFill
+        button.tintColor = .white
+        button.backgroundColor = .clear
+        button.setImage(image, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(displayInfos), for: .touchUpInside)
+
+        return button
+    }()
+
     let formula : UITextField = {
         let field = UITextField()
         field.isEnabled = false
@@ -113,6 +106,15 @@ class LigandController: UIViewController {
         field.allowsEditingTextAttributes = false
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
+    }()
+
+    private let spin : CABasicAnimation = {
+        let spin = CABasicAnimation(keyPath: "rotation")
+        spin.fromValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: 0))
+        spin.toValue = NSValue(scnVector4: SCNVector4(x: 0, y: 1, z: 0, w: Float.pi * 2))
+        spin.duration = 5
+        spin.repeatCount = .infinity
+        return spin
     }()
 
     @objc func handleAnimation() {
@@ -130,23 +132,21 @@ class LigandController: UIViewController {
         }
         isAnimatated = !isAnimatated
     }
-    
+
     @objc func handleShare(sender: UIButton) {
-        
-        if let ligandName = ligand?.name {
-            let objectsToShare = [ligandName, sceneView.snapshot()] as [Any]
-            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            
-            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
-            activityVC.popoverPresentationController?.sourceView = sender
-            self.present(activityVC, animated: true, completion: nil)
-        } else {
+        guard let ligandName = ligand?.name else {
             let alert = UIAlertController(title: "Error", message: "No ligand to share", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Try with an other one", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
+            return
         }
+        let objectsToShare = [ligandName, sceneView.snapshot()] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+        activityVC.popoverPresentationController?.sourceView = sender
+        self.present(activityVC, animated: true, completion: nil)
     }
-    
+
     @objc func handleDisplay() {
         guard let ligand = self.ligand else { return }
         generateModel(with: ligand, mode: modeButton.selectedSegmentIndex)
@@ -164,11 +164,19 @@ class LigandController: UIViewController {
 
         }
     }
-    
+
+    @objc func displayInfos() {
+        let infosController = InfosController()
+        guard let infos = ligand?.infos else { return }
+        infosController.infos = infos
+        infosController.title = "Informations"
+        self.navigationController?.pushViewController(infosController, animated: true)
+    }
+
     private func generateModel(with ligand: Ligand, mode: Int) {
         ligandNode?.removeFromParentNode()
         ligandNode = SCNNode()
-        
+
         switch mode {
         case 0 :
             generateModel(with: ligand.bonds, atoms: ligand.atoms, centroid: ligand.centroid)
@@ -210,7 +218,7 @@ class LigandController: UIViewController {
             }
         }
     }
-    
+
     private func generateCylinders(value: Float, vectors: [SCNVector3], atoms: [Atom], bond: Bond, radius: CGFloat = 0.05) {
         guard let ligandNode = ligandNode else { return }
         let newV1 = vectors[0].updateValue(value: value)
@@ -228,37 +236,53 @@ class LigandController: UIViewController {
         ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: newV1, v2: centroid, radius: radius, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.left - 1].type]))
         ligandNode.addChildNode(CylinderLine(parent: ligandNode, v1: centroid, v2: newV2, radius: radius, radSegmentCount: 25, color: UIColor.CPK[atoms[bond.right - 1].type]))
     }
-    
+
+    private func createLight(type: SCNLight.LightType, color: UIColor, position: SCNVector3?) -> SCNNode {
+        let node = SCNNode()
+        let light = SCNLight()
+        light.type = type
+        light.color = color
+        node.light = light
+        guard let position = position else { return node }
+        node.position = position
+        return node
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let animationButton = UIBarButtonItem(image: UIImage(named: "animation")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleAnimation))
         let shareButton = UIBarButtonItem(image: UIImage(named: "share")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleShare))
         navigationItem.rightBarButtonItems = [shareButton, animationButton]
         view.backgroundColor = C_DarkBackground
-        
+
         view.addSubview(sceneView)
         view.addSubview(modeButton)
         view.addSubview(formula)
-        
+        view.addSubview(infoButton)
+
         modeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         modeButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         modeButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        
+
         formula.heightAnchor.constraint(equalToConstant: 30).isActive = true
         formula.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         formula.topAnchor.constraint(equalTo: modeButton.bottomAnchor, constant: 30).isActive = true
-        
+
         sceneView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         sceneView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+
+        infoButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        infoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        infoButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
 
 }
 
 extension Array where Element == SCNVector3 {
-
     func centroid() -> SCNVector3 {
         var totalX = Float(0)
         var totalY = Float(0)
@@ -276,12 +300,25 @@ extension SCNVector3 {
     static func ==(rhs : SCNVector3, lhs : SCNVector3) -> Bool {
         return rhs.x == lhs.x && rhs.y == lhs.y && rhs.z == lhs.z
     }
-    
+
     func updateValue(value: Float) -> SCNVector3 {
         var vec = self
         vec.x = self.x + value
         vec.y = self.y
         vec.z = self.z
         return vec
+    }
+
+    func distance(receiver: SCNVector3) -> Float {
+        let xd = receiver.x - self.x
+        let yd = receiver.y - self.y
+        let zd = receiver.z - self.z
+        let distance = Float(sqrt(xd * xd + yd * yd + zd * zd))
+
+        if (distance < 0) {
+            return (distance * -1)
+        } else {
+            return (distance)
+        }
     }
 }

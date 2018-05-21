@@ -28,7 +28,7 @@ final class RequestService {
             }
             guard let JSONData = try? JSONDecoder().decode(T.self, from: getData) else {
                 DispatchQueue.main.async { completion(nil) }
-                print("DataService : Fetching From Data to Model failed")
+                print("DataService : Fetching From Data to Model \(T.self) failed")
                 return
             }
             DispatchQueue.main.async { completion(JSONData) }

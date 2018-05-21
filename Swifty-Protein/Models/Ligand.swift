@@ -10,8 +10,17 @@ import UIKit
 import SceneKit
 
 struct Results : Decodable {
-    let formula : String
-    let type : String
+    let formula : String?
+    let type : String?
+    let name : String?
+    let identifiers : String?
+    let formulaWeight : Float?
+    let atomCount : Int?
+    let formalCharge : Int?
+    let bondCount : Int?
+    let aromaticBondCount : Int?
+    let chiralAtomCount : Int?
+    let chiralAtomsStr : String?
 }
 
 struct Infos : Decodable {
@@ -69,30 +78,16 @@ let atomName : [String : String] = [
     "W"  : "Tungsten"
 ]
 
-
-let atomValence : [String : String] = [
-    "B"  : "3",
-    "BR" : "1, 3, 5 or 7",
-    "C"  : "4",
-    "CA" : "2",
-    "CL" : "1, 3, 5 or 7",
-    "CO" : "3",
-    "CR" : "3 or 6",
-    "F"  : "1",
-    "FE" : "3",
-    "H"  : "1",
-    "I"  : "1, 3, 5 or 7",
-    "MG" : "2",
-    "MN" : "3, 4, 6 or 7",
-    "MO" : "1",
-    "N"  : "3",
-    "O"  : "2",
-    "P"  : "3 or 5",
-    "PT" : "2 or 4",
-    "RH" : "---",
-    "RU" : "---",
-    "S"  : "4 or 6",
-    "SE" : "2, 4 or 6",
-    "V"  : "---",
-    "W"  : "---"
+let resultsKeys : [String : String] = [
+    "formula" : "Formula",
+    "type" : "Type",
+    "name" : "Name",
+    "identifiers" : "Identifiers",
+    "formulaWeight" : "Molecular Weight",
+    "atomCount" : "Atom Count",
+    "formalCharge" : "Formal Charge",
+    "bondCount" : "Bond Count",
+    "aromaticBondCount" : "Aromatic Bond Count",
+    "chiralAtomCount" : "Chiral Atom Count",
+    "chiralAtomsStr" : "Chiral Atoms"
 ]
