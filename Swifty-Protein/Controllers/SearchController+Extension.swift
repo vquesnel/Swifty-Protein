@@ -35,6 +35,7 @@ extension SearchController {
 
     // CELLS SELECTION
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let ligandController = LigandController()
         if (SearchController.clickedIndex) { return }
         SearchController.clickedIndex = true
         var name = String()
@@ -46,9 +47,9 @@ extension SearchController {
         ligandController.title = name
         RCSBService.shared.getLigand(name: name) { data in
             if let ligand = data {
-                self.ligandController.ligand = ligand
+                ligandController.ligand = ligand
                 SearchController.clickedIndex = false
-                self.navigationController?.pushViewController(self.ligandController, animated: true)
+                self.navigationController?.pushViewController(ligandController, animated: true)
                 cell.loadingWheel.stopAnimating()
                 tableView.deselectRow(at: indexPath, animated: true)
             }
