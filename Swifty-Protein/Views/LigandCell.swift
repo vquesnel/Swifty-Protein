@@ -39,7 +39,8 @@ class LigandCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .none
+        backgroundColor = .clear
+
         
         addSubview(name)
         addSubview(separator)

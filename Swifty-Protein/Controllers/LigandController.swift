@@ -248,6 +248,12 @@ class LigandController: UIViewController {
         return node
     }
 
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        coordinator.animate(alongsideTransition: { [unowned self] _ in
+            self.atomLauncher.updateSettings()
+        }, completion: { _ in })
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
