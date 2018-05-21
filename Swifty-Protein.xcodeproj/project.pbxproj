@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DA06BF820B2D0E500A1936C /* AtomLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA06BF720B2D0E500A1936C /* AtomLauncher.swift */; };
 		0DE6B07920ADB8AF00E9020E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B07820ADB8AF00E9020E /* AppDelegate.swift */; };
 		0DE6B07B20ADB8AF00E9020E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B07A20ADB8AF00E9020E /* Colors.swift */; };
 		0DE6B08B20ADB92C00E9020E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B08A20ADB92C00E9020E /* Launch Screen.storyboard */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0DA06BF720B2D0E500A1936C /* AtomLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomLauncher.swift; sourceTree = "<group>"; };
 		0DE6B07520ADB8AF00E9020E /* Swifty-Protein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty-Protein.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DE6B07820ADB8AF00E9020E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DE6B07A20ADB8AF00E9020E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				0DE6B09820ADBA0500E9020E /* LigandController.swift */,
+				0DA06BF720B2D0E500A1936C /* AtomLauncher.swift */,
 				0DE6B09A20ADBA1F00E9020E /* LoginController.swift */,
 				0DE6B09C20ADBA4400E9020E /* LoginController+Extension.swift */,
 				0DE6B09E20ADBA5700E9020E /* SearchController.swift */,
@@ -216,6 +219,7 @@
 			files = (
 				0DE6B09620ADB9D600E9020E /* Ligand.swift in Sources */,
 				57DED4BD20B06CA400B2DDFD /* CylinderLine.swift in Sources */,
+				0DA06BF820B2D0E500A1936C /* AtomLauncher.swift in Sources */,
 				0DE6B09F20ADBA5700E9020E /* SearchController.swift in Sources */,
 				0DE6B07B20ADB8AF00E9020E /* Colors.swift in Sources */,
 				0DE6B08E20ADB98100E9020E /* LigandCell.swift in Sources */,
@@ -348,11 +352,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7CT92MF359;
+				DEVELOPMENT_TEAM = KZLCG27XYU;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
+				PRODUCT_BUNDLE_IDENTIFIER = kwiessle.Protein;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -364,11 +368,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7CT92MF359;
+				DEVELOPMENT_TEAM = KZLCG27XYU;
 				INFOPLIST_FILE = "Swifty-Protein/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "vquesnel.Swifty-Protein";
+				PRODUCT_BUNDLE_IDENTIFIER = kwiessle.Protein;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

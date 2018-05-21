@@ -12,6 +12,12 @@ import SceneKit
 class LigandController: UIViewController {
 
     private var ligandNode: SCNNode?
+    
+    
+    lazy var atomLauncher : AtomLauncher = {
+        let launcher = AtomLauncher()
+        return launcher
+    }()
 
     var ligand : Ligand? {
         willSet {
@@ -152,8 +158,10 @@ class LigandController: UIViewController {
             let targetPoint = sceneView.hitTest(location, options: nil)
             guard let targetNode = targetPoint.first?.node.position else { return }
             guard let centroid = ligand?.centroid else { return }
-            let atom = ligand?.atoms.first(where: { SCNVector3($0.posX - Double(centroid.x), $0.posY - Double(centroid.y), $0.posZ - Double(centroid.z)) == targetNode })
-            print(atom)
+            guard let atom = ligand?.atoms.first(where: { SCNVector3($0.posX - Double(centroid.x), $0.posY - Double(centroid.y), $0.posZ - Double(centroid.z)) == targetNode }) else { return }
+            atomLauncher.atom = atom
+            atomLauncher.show()
+
         }
     }
     
