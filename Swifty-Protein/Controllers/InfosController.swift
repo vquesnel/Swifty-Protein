@@ -11,13 +11,14 @@ import UIKit
 class InfosController: UITableViewController {
     
     let infosCellId = "infosCellId"
-    
+    let infosLabelCellId = "infosLabelCellId"
     var infos : Infos?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.register(InfoCell.self, forCellReuseIdentifier: infosCellId)
+        self.tableView.register(InfoLabelCell.self, forCellReuseIdentifier: infosLabelCellId)
         self.tableView.backgroundColor = C_DarkBackground
         self.tableView.separatorColor = .clear
         self.tableView.allowsSelection = false
@@ -40,35 +41,46 @@ class InfosController: UITableViewController {
                 i += 1
             }
         }
-        return i
+        return i * 2
     }
     
     // CELLS TYPE
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: infosCellId, for: indexPath) as! InfoCell
+        var i = 0
+        var datas = [String]()
+        let cell = UITableViewCell()
         guard let infos = self.infos else { return cell }
         let mirror = Mirror(reflecting: infos.results[0])
-        var i  = 0
-        for child in mirror.children  {
-            if i == indexPath.item {
-                cell.label.text = "\(resultsKeys[child.label!]!) :"
+        for child in mirror.children {
+            if i == indexPath.item / 2 {
                 let value: Any = child.value
                 let subMirror = Mirror(reflecting: value)
                 if subMirror.displayStyle == .optional {
-                    cell.value.text = "\(subMirror.children.first?.value ?? "N/A")"
-                } else {
-                    cell.value.text = "\(child.value)"
+                    datas = [resultsKeys[child.label!]!, String(describing: subMirror.children.first?.value ?? "N/A")]
                 }
             }
             i += 1
         }
-        cell.backgroundColor = indexPath.item % 2 == 1 ? C_DarkBackground: UIColor(white: 0.8, alpha: 0.03)
-        return cell
+        if (indexPath.item % 2 == 1) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: infosCellId, for: indexPath) as! InfoCell
+            cell.value.text = datas[1]
+            cell.backgroundColor = indexPath.item % 2 == 1 ? C_DarkBackground: UIColor(white: 0.8, alpha: 0.03)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: infosLabelCellId, for: indexPath) as! InfoLabelCell
+            cell.label.text = datas[0]
+            cell.backgroundColor = UIColor(white: 1, alpha: 0.07)
+            return cell
+        }
     }
     
     // CELLS HEIGHT
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(60)
+        switch indexPath.item % 2 {
+            case 1 :
+                return CGFloat(60)
+            default :
+                return CGFloat(30)
+        }
     }
-    
 }

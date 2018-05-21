@@ -1,20 +1,20 @@
 //
-//  LigandCell.swift
+//  infoLabelCell.swift
 //  Swifty-Protein
 //
-//  Created by Kiefer Wiessler on 12/05/2018.
-//  Copyright © 2018 Kiefer Wiessler. All rights reserved.
+//  Created by Victor QUESNEL on 5/21/18.
+//  Copyright © 2018 Kiefer WIESSLER. All rights reserved.
 //
 
 import UIKit
 
-class LigandCell: UITableViewCell {
+class InfoLabelCell: UITableViewCell {
     
-    let name : UILabel = {
+    let label : UILabel = {
         let label = UILabel()
         label.textColor = C_TextLight
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.highlightedTextColor = .black
         return label
     }()
     
@@ -25,31 +25,15 @@ class LigandCell: UITableViewCell {
         return view
     }()
     
-    let loadingWheel : UIActivityIndicatorView = {
-        let wheel = UIActivityIndicatorView()
-        wheel.translatesAutoresizingMaskIntoConstraints = false
-        return wheel
-    }()
-    
-    let selectedView : UIView = {
-        let view = UIView()
-        view.backgroundColor = C_Blue
-        return view
-    }()
-    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         
-        addSubview(name)
+        addSubview(label)
         addSubview(separator)
-        addSubview(loadingWheel)
         
-        name.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
-        name.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        loadingWheel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
-        loadingWheel.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        label.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
         
         separator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 1).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true

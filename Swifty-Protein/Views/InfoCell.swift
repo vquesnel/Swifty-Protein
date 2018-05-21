@@ -10,20 +10,11 @@ import UIKit
 
 class InfoCell: UITableViewCell {
     
-    let label : UILabel = {
-        let label = UILabel()
-        label.textColor = C_TextLight
-        label.textAlignment = .center
-        label.backgroundColor = UIColor(white: 1, alpha: 0.07)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     let value : UILabel = {
         let label = UILabel()
         label.textColor = C_TextLight
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 2
+        label.numberOfLines = 3
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -40,20 +31,16 @@ class InfoCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         
-        addSubview(label)
         addSubview(separator)
         addSubview(value)
         
-        label.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        label.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor).isActive = true
-        
-        value.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor).isActive = true
-        value.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5).isActive = true
+        value.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, constant: -10).isActive = true
+        value.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
+        value.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         
         separator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 1).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         separator.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

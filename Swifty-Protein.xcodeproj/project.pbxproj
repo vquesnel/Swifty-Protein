@@ -24,6 +24,7 @@
 		0DE6B0A620ADBAA900E9020E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B0A520ADBAA900E9020E /* Assets.xcassets */; };
 		277A887F20B2CD0D0062F8CF /* InfosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277A887E20B2CD0D0062F8CF /* InfosController.swift */; };
 		277A888120B2D0170062F8CF /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277A888020B2D0170062F8CF /* InfoCell.swift */; };
+		27DBBA8C20B320F3007E3C23 /* infoLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DBBA8B20B320F3007E3C23 /* infoLabelCell.swift */; };
 		57DED4BD20B06CA400B2DDFD /* CylinderLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DED4BC20B06CA400B2DDFD /* CylinderLine.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		0DE6B0A520ADBAA900E9020E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		277A887E20B2CD0D0062F8CF /* InfosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfosController.swift; sourceTree = "<group>"; };
 		277A888020B2D0170062F8CF /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
+		27DBBA8B20B320F3007E3C23 /* infoLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = infoLabelCell.swift; sourceTree = "<group>"; };
 		57DED4BC20B06CA400B2DDFD /* CylinderLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderLine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +102,7 @@
 			children = (
 				277A888020B2D0170062F8CF /* InfoCell.swift */,
 				0DE6B08D20ADB98100E9020E /* LigandCell.swift */,
+				27DBBA8B20B320F3007E3C23 /* infoLabelCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				0DE6B09D20ADBA4400E9020E /* LoginController+Extension.swift in Sources */,
 				0DE6B09B20ADBA1F00E9020E /* LoginController.swift in Sources */,
 				0DE6B09320ADB9BB00E9020E /* RequestService.swift in Sources */,
+				27DBBA8C20B320F3007E3C23 /* infoLabelCell.swift in Sources */,
 				0DE6B09120ADB9A700E9020E /* RCSBService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
