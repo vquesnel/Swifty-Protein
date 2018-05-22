@@ -64,7 +64,7 @@ class InfosController: UITableViewController {
         if (indexPath.item % 2 == 1) {
             let cell = tableView.dequeueReusableCell(withIdentifier: infosCellId, for: indexPath) as! InfoCell
             cell.value.text = datas[1]
-            cell.backgroundColor = indexPath.item % 2 == 1 ? C_DarkBackground: UIColor(white: 0.8, alpha: 0.03)
+            cell.backgroundColor =  C_DarkBackground
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: infosLabelCellId, for: indexPath) as! InfoLabelCell

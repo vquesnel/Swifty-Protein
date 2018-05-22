@@ -12,18 +12,64 @@ extension SearchController {
     
     static var clickedIndex = false
     
-    // NUMBER OF CELLS
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching { return filteredLigands.count }
-        else { return ligands.count }
+    // ALAPHABETIC SCROLL
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        if isSearching {
+            return nil
+        }
+        return sections
     }
     
+    // SET HEADERS
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+ 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if isSearching {
+            return nil
+        }
+        return sections[section]
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = UIView()
+        if isSearching {
+            return cell
+        }
+        cell.backgroundColor = UIColor(red: 180/255, green: 178/255, blue: 180/255, alpha: 1)
+        let label = UILabel()
+        label.text = sections[section]
+        label.textColor = C_DarkBackground
+        label.translatesAutoresizingMaskIntoConstraints = false
+        cell.addSubview(label)
+        label.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 10).isActive = true
+        return cell
+    }
+    
+    // CELL IN EACH HEADER
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearching { return filteredLigands.count }
+        else {
+            if sections[section] == "#" {
+                return ligands.filter { Int(String($0.first!)) != nil }.count
+            }
+            return ligands.filter { $0.first == sections[section].first }.count
+        }
+    }
+
     // CELLS TYPE
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
-        
         if isSearching { cell.name.text = filteredLigands[indexPath.item] }
-        else { cell.name.text = ligands[indexPath.item] }
+        else {
+            if sections[indexPath.section] == "#" {
+                cell.name.text = ligands.filter { Int(String($0.first!)) != nil }[indexPath.item]
+            } else {
+                cell.name.text = ligands.filter { $0.first == sections[indexPath.section].first }[indexPath.item]
+            }
+        }
         cell.backgroundColor = indexPath.item % 2 == 1 ? C_DarkBackground: UIColor(white: 0.8, alpha: 0.03)
         return cell
     }
@@ -64,11 +110,12 @@ extension SearchController {
             }
         }
     }
-    
+
     // SEARCHBAR FILTERING
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty { isSearching = false }
         else {
+            tableView.tableHeaderView = nil
             filteredLigands = []
             isSearching = true
             for ligand in ligands {
@@ -77,7 +124,6 @@ extension SearchController {
         }
         tableView.reloadData()
     }
-    
     
     // KEYBOARD DIMISS
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

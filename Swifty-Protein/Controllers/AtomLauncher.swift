@@ -19,6 +19,8 @@ class AtomLauncher {
         }
     }
     
+    let height : CGFloat = 50
+    
     var isActive = false
     
     let shadowView = UIView()
@@ -26,7 +28,7 @@ class AtomLauncher {
     let name : UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 40)
+        label.font = UIFont.systemFont(ofSize: 25)
         label.layer.cornerRadius = 20
         label.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         label.backgroundColor = C_Foreground
@@ -43,7 +45,7 @@ class AtomLauncher {
         self.shadowView.frame = window.frame
         self.shadowView.alpha = isActive ? 1 : 0
         self.name.isHidden = !isActive
-        self.name.frame = isActive ? CGRect(x: 0, y: window.frame.height - 100, width: window.frame.width, height: 100) : CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: 100)
+        self.name.frame = isActive ? CGRect(x: 0, y: window.frame.height - height, width: window.frame.width, height: height) : CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
     }
     
     func show() -> Void {
@@ -54,14 +56,14 @@ class AtomLauncher {
         
         shadowView.frame = window.frame
         shadowView.alpha = 0
-        name.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: 50)
+        name.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
         name.isHidden = false
         window.addSubview(shadowView)
         window.addSubview(name)
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.shadowView.alpha = 1
-            self.name.frame = CGRect(x: 0, y: window.frame.height - 100, width: window.frame.width, height: 100)
+            self.name.frame = CGRect(x: 0, y: window.frame.height - self.height, width: window.frame.width, height: self.height)
         }, completion: nil)
     }
     
@@ -71,7 +73,7 @@ class AtomLauncher {
             self.isActive = false
             self.shadowView.alpha = 0
             self.name.isHidden = true
-            self.name.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: 100)
+            self.name.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: self.height)
         }
     }
     

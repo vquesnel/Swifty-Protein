@@ -12,6 +12,8 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     
     let loginController = LoginController()
     
+    let sections: [String] = ["#","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+
     let ligands : [String] = {
         return RCSBService.shared.getRessource()
     }()

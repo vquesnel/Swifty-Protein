@@ -23,7 +23,7 @@ class RCSBService {
     func getRessource() -> [String] {
         guard let location = Bundle.main.path(forResource: "ligands", ofType: "txt") else { fatalError() }
         guard let text = try? String(contentsOf: URL(fileURLWithPath: location)) else { fatalError() }
-        return text.components(separatedBy: "\n").filter { $0 != "" }
+        return text.components(separatedBy: "\n").filter { $0 != "" }.sorted()
     }
 
     /* Fetching 3D coordinates about a given Ligand */
