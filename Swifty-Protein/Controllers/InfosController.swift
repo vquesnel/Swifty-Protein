@@ -68,7 +68,7 @@ class InfosController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: infosLabelCellId, for: indexPath) as! InfoLabelCell
-            cell.label.text = datas[0]
+            cell.label.text = "\(datas[0]) :"
             cell.backgroundColor = UIColor(white: 1, alpha: 0.07)
             return cell
         }

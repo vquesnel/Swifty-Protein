@@ -134,13 +134,13 @@ class LigandController: UIViewController {
     }
 
     @objc func handleShare(sender: UIButton) {
-        guard let ligandName = ligand?.name else {
+        guard let formula = ligand?.infos?.results.first?.formula else {
             let alert = UIAlertController(title: "Error", message: "No ligand to share", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Try with an other one", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }
-        let objectsToShare = [ligandName, sceneView.snapshot()] as [Any]
+        let objectsToShare = ["Formula : \(formula)", sceneView.snapshot()] as [Any]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
         activityVC.popoverPresentationController?.sourceView = sender
@@ -161,7 +161,6 @@ class LigandController: UIViewController {
             guard let atom = ligand?.atoms.first(where: { SCNVector3($0.posX - Double(centroid.x), $0.posY - Double(centroid.y), $0.posZ - Double(centroid.z)) == targetNode }) else { return }
             atomLauncher.atom = atom
             atomLauncher.show()
-
         }
     }
 
