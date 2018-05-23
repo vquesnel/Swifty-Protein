@@ -279,10 +279,10 @@ class LigandController: UIViewController {
         sceneView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         sceneView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
 
-        infoButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        infoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
-        infoButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        infoButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        infoButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        infoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        infoButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 
 }

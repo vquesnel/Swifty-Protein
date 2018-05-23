@@ -41,12 +41,25 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.backgroundImage = UIImage()
         bar.backgroundColor = C_Foreground
-//        bar.layer.cornerRadius = 10
-//        bar.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        bar.text
+        bar.barTintColor = .clear
+        if let textField = bar.value(forKey: "searchField") as? UITextField {
+            textField.backgroundColor = C_Background
+            textField.layer.borderWidth = 1
+            textField.textColor = C_TextLight
+            textField.layer.borderColor = UIColor(white:0, alpha: 0.15).cgColor
+            textField.layer.cornerRadius = 12
+            textField.clipsToBounds = true
+            textField.attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.foregroundColor : C_TextLight])
+            
+            if let leftView = textField.leftView as? UIImageView {
+                leftView.image = leftView.image?.withRenderingMode(.alwaysTemplate)
+                leftView.tintColor = C_TextLight
+            }
+            
+        }
+
         bar.clipsToBounds = true
         bar.barTintColor = .black
-        bar.placeholder = "Search"
         bar.keyboardAppearance = .dark
         return bar
     }()
@@ -92,7 +105,11 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     func authenticate() {
         navigationController?.present(loginController, animated: false, completion: nil)
     }
+    
+    
 }
+
+
 
 
 

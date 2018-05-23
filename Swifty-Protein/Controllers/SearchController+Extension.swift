@@ -30,8 +30,7 @@ extension SearchController {
    
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = UIView(frame: .zero)
-        
+        let cell = UIView()
         return cell
     }
     
@@ -46,6 +45,7 @@ extension SearchController {
         }
     }
 
+    
     // CELLS TYPE
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
@@ -71,14 +71,15 @@ extension SearchController {
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if isSearching { return }
         view.backgroundColor = C_Background
+        let separator = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 1))
+        separator.backgroundColor = UIColor(white:0, alpha: 0.15)
         let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.width - 10, height: view.frame.height))
         label.text = sections[section]
-        label.textColor = .white
+        label.textColor = UIColor(white: 0, alpha: 0.6)
         view.addSubview(label)
-        
-      
-
+        view.addSubview(separator)
     }
 
     // CELLS SELECTION
@@ -135,7 +136,10 @@ extension SearchController {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
     }
+
 }
+
+
 
 
 

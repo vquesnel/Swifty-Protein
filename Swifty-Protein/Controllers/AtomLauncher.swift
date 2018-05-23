@@ -19,7 +19,7 @@ class AtomLauncher {
         }
     }
     
-    let height : CGFloat = 50
+    let height : CGFloat = 120
     
     var isActive = false
     

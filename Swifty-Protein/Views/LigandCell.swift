@@ -31,11 +31,13 @@ class LigandCell: UITableViewCell {
         return wheel
     }()
     
-    let selectedView : UIView = {
+    lazy var selectedView : UIView = {
         let view = UIView()
         view.backgroundColor = C_Blue
         return view
     }()
+    
+
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
