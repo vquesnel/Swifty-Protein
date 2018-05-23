@@ -9,9 +9,9 @@
 import UIKit
 
 extension SearchController {
-    
+
     static var clickedIndex = false
-    
+
     // ALAPHABETIC SCROLL
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         if isSearching {
@@ -19,21 +19,17 @@ extension SearchController {
         }
         return sections
     }
-    
 
-    
     // SET HEADERS
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
- 
-   
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = UIView()
         return cell
     }
-    
+
     // CELL IN EACH HEADER
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching { return filteredLigands.count }
@@ -45,7 +41,7 @@ extension SearchController {
         }
     }
 
-    
+
     // CELLS TYPE
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCellID", for: indexPath) as! LigandCell
@@ -60,16 +56,16 @@ extension SearchController {
         cell.backgroundColor = indexPath.item % 2 == 1 ? C_DarkBackground: UIColor(white: 0.8, alpha: 0.03)
         return cell
     }
-    
+
     // CELLS HEIGHT
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(60)
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat(30)
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if isSearching { return }
         view.backgroundColor = C_Background
@@ -127,19 +123,14 @@ extension SearchController {
         }
         tableView.reloadData()
     }
-    
+
     // KEYBOARD DIMISS
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.endEditing(true)
     }
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
     }
 
 }
-
-
-
-
-

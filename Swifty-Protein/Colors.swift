@@ -42,11 +42,6 @@ func C_addBackground(image: String) -> UIImageView {
     return view
 }
 
-
-
-
-
-
 extension UIColor {
     static let CPK: [String: UIColor] = [
         

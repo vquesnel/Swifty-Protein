@@ -32,11 +32,11 @@ class LoginController: UIViewController {
         return button
     }()
     
+    let background = C_addBackground(image: "background")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let background = C_addBackground(image: "background")
         
         view.addSubview(background)
         view.sendSubview(toBack: background)
@@ -45,7 +45,6 @@ class LoginController: UIViewController {
         
         setConstraints()
     }
-    
     
     @objc func authenticate(){
         let context = LAContext()
@@ -65,6 +64,12 @@ class LoginController: UIViewController {
         }
     }
     
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        coordinator.animate(alongsideTransition: { [unowned self] _ in
+            self.background.frame = UIScreen.main.bounds
+        }, completion: { _ in })
+    }
     
     func setConstraints() {
         
