@@ -75,7 +75,7 @@ class LigandController: UIViewController {
         let control = UISegmentedControl(items: ["Sticks", "Sticks & balls", "Balls"])
         control.translatesAutoresizingMaskIntoConstraints = false
         control.backgroundColor = .none
-        control.tintColor = UIColor(red:0.23, green:0.67, blue:0.93, alpha:1.0)
+        control.tintColor = C_Background
         control.layer.cornerRadius = 5
         control.selectedSegmentIndex = 1
         control.addTarget(self, action: #selector(handleDisplay), for: .valueChanged)
