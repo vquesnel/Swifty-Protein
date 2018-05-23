@@ -12,8 +12,8 @@ class InfoLabelCell: UITableViewCell {
     
     let label : UILabel = {
         let label = UILabel()
-        label.textColor = C_TextLight
-        label.textAlignment = .center
+        label.textColor = C_Foreground
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

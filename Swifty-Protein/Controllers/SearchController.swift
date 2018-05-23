@@ -18,12 +18,14 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         return RCSBService.shared.getRessource()
     }()
     
+    
     var filteredLigands = [String]()
     var isSearching = false
     
     lazy var tableView : UITableView = {
         let view = UITableView()
         view.delegate = self
+        view.sectionIndexColor = C_Foreground
         view.dataSource = self
         view.register(LigandCell.self, forCellReuseIdentifier: "ligandCellID")
         view.separatorColor = UIColor(white: 0, alpha: 0)
@@ -35,11 +37,13 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     lazy var searchBar : UISearchBar = {
         let bar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 70))
         bar.delegate = self
+        bar.backgroundImage = UIImage(named: "background")
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.backgroundImage = UIImage()
         bar.backgroundColor = C_Foreground
-        bar.layer.cornerRadius = 10
-        bar.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+//        bar.layer.cornerRadius = 10
+//        bar.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        bar.text
         bar.clipsToBounds = true
         bar.barTintColor = .black
         bar.placeholder = "Search"
@@ -50,14 +54,15 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    
         view.backgroundColor = C_DarkBackground
         view.addSubview(tableView)
         view.addSubview(searchBar)
         
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 2).isActive = true
-        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -2).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
         
         searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         searchBar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
@@ -88,5 +93,6 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         navigationController?.present(loginController, animated: false, completion: nil)
     }
 }
+
 
 

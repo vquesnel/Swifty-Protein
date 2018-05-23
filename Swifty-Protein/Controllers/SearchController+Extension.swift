@@ -20,31 +20,18 @@ extension SearchController {
         return sections
     }
     
+
+    
     // SET HEADERS
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
  
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if isSearching {
-            return nil
-        }
-        return sections[section]
-    }
-    
+   
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = UIView()
-        if isSearching {
-            return cell
-        }
-        cell.backgroundColor = UIColor(red: 180/255, green: 178/255, blue: 180/255, alpha: 1)
-        let label = UILabel()
-        label.text = sections[section]
-        label.textColor = C_DarkBackground
-        label.translatesAutoresizingMaskIntoConstraints = false
-        cell.addSubview(label)
-        label.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 10).isActive = true
+        let cell = UIView(frame: .zero)
+        
         return cell
     }
     
@@ -77,6 +64,21 @@ extension SearchController {
     // CELLS HEIGHT
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(60)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(30)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.backgroundColor = C_Background
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.width - 10, height: view.frame.height))
+        label.text = sections[section]
+        label.textColor = .white
+        view.addSubview(label)
+        
+      
+
     }
 
     // CELLS SELECTION
@@ -134,4 +136,6 @@ extension SearchController {
         searchBar.endEditing(true)
     }
 }
+
+
 

@@ -10,7 +10,7 @@ import UIKit
 
 
 let C_Background : UIColor = {
-    return UIColor(red: 240/255, green: 25/255, blue: 1/255, alpha: 1)
+    return UIColor(red: 199/255, green: 109/255, blue: 38/255, alpha: 1)
 }()
 
 let C_Foreground : UIColor = {

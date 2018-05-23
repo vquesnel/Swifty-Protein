@@ -15,7 +15,7 @@ class InfoCell: UITableViewCell {
         label.textColor = C_TextLight
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 3
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -34,7 +34,7 @@ class InfoCell: UITableViewCell {
         addSubview(separator)
         addSubview(value)
         
-        value.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, constant: -10).isActive = true
+        value.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, constant: -20).isActive = true
         value.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
         value.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         

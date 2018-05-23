@@ -17,13 +17,19 @@ class InfosController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+      
+        self.tableView.frame = CGRect(x: 5, y: 0, width: view.frame.width - 100, height: view.frame.height)
+        self.tableView.sectionIndexBackgroundColor = .red
         self.tableView.register(InfoCell.self, forCellReuseIdentifier: infosCellId)
         self.tableView.register(InfoLabelCell.self, forCellReuseIdentifier: infosLabelCellId)
         self.tableView.backgroundColor = C_DarkBackground
         self.tableView.separatorColor = .clear
         self.tableView.allowsSelection = false
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        
     }
+    
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let infos = self.infos else { return 0 }
@@ -68,7 +74,7 @@ class InfosController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: infosLabelCellId, for: indexPath) as! InfoLabelCell
-            cell.label.text = "\(datas[0]) :"
+            cell.label.text = "   \(datas[0]) :"
             cell.backgroundColor = UIColor(white: 1, alpha: 0.07)
             return cell
         }
