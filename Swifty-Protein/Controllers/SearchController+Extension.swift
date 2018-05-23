@@ -20,17 +20,17 @@ extension SearchController {
         return sections
     }
     
-
-    
     // SET HEADERS
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
  
-   
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+<<<<<<< HEAD
         let cell = UIView()
+=======
+        let cell = UIView(frame: .zero)
+>>>>>>> handle completion for sharing activity and remove header when searching
         return cell
     }
     
@@ -71,7 +71,13 @@ extension SearchController {
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+<<<<<<< HEAD
         if isSearching { return }
+=======
+        if isSearching {
+            return
+        }
+>>>>>>> handle completion for sharing activity and remove header when searching
         view.backgroundColor = C_Background
         let separator = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 1))
         separator.backgroundColor = UIColor(white:0, alpha: 0.15)
@@ -79,7 +85,10 @@ extension SearchController {
         label.text = sections[section]
         label.textColor = UIColor(white: 0, alpha: 0.6)
         view.addSubview(label)
+<<<<<<< HEAD
         view.addSubview(separator)
+=======
+>>>>>>> handle completion for sharing activity and remove header when searching
     }
 
     // CELLS SELECTION

@@ -132,8 +132,18 @@ class LigandController: UIViewController {
         }
         isAnimatated = !isAnimatated
     }
+    
+    private func handleAnimationWhenShared(paused: Bool) {
+        if isAnimatated {
+            if let animation = ligandNode?.animationPlayer(forKey: "spin around") {
+                animation.paused = paused
+            }
+        }
+        
+    }
 
     @objc func handleShare(sender: UIButton) {
+        handleAnimationWhenShared(paused: true)
         guard let formula = ligand?.infos?.results.first?.formula else {
             let alert = UIAlertController(title: "Error", message: "No ligand to share", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Try with an other one", style: UIAlertActionStyle.default, handler: nil))
@@ -144,6 +154,9 @@ class LigandController: UIViewController {
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
         activityVC.popoverPresentationController?.sourceView = sender
+        activityVC.completionWithItemsHandler = { (activity, success, items, error) in
+            self.handleAnimationWhenShared(paused: false)
+        }
         self.present(activityVC, animated: true, completion: nil)
     }
 

@@ -41,6 +41,7 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.backgroundImage = UIImage()
         bar.backgroundColor = C_Foreground
+<<<<<<< HEAD
         bar.barTintColor = .clear
         if let textField = bar.value(forKey: "searchField") as? UITextField {
             textField.backgroundColor = C_Background
@@ -58,6 +59,8 @@ class SearchController : UIViewController, UITableViewDataSource, UITableViewDel
             
         }
 
+=======
+>>>>>>> handle completion for sharing activity and remove header when searching
         bar.clipsToBounds = true
         bar.barTintColor = .black
         bar.keyboardAppearance = .dark
