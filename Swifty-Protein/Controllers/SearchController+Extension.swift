@@ -22,6 +22,9 @@ extension SearchController {
 
     // SET HEADERS
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isSearching{
+            return 1
+        }
         return sections.count
     }
 
@@ -87,8 +90,14 @@ extension SearchController {
         let cell = tableView.cellForRow(at: indexPath) as! LigandCell
         cell.loadingWheel.startAnimating()
         cell.selectedBackgroundView = cell.selectedView
-        if isSearching { name = filteredLigands[indexPath.item] }
-        else { name = ligands[indexPath.item] }
+        if isSearching {
+            name = filteredLigands[indexPath.item]
+            
+        } else if sections[indexPath.section] == "#" {
+            name = ligands.filter { Int(String($0.first!)) != nil }[indexPath.item]
+        } else {
+            name = ligands.filter { $0.first == sections[indexPath.section].first }[indexPath.item]
+        }
         ligandController.title = name
         RCSBService.shared.getLigand(name: name) { data in
             if let ligand = data {
