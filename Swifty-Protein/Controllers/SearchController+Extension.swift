@@ -127,7 +127,7 @@ extension SearchController {
             filteredLigands = []
             isSearching = true
             for ligand in ligands {
-                if (ligand.range(of: searchText.uppercased()) != nil) { filteredLigands.append(ligand) }
+                if (ligand.range(of: searchText, options: .caseInsensitive) != nil) { filteredLigands.append(ligand) }
             }
         }
         tableView.reloadData()
